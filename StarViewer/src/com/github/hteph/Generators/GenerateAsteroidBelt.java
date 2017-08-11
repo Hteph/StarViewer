@@ -17,7 +17,7 @@ public final class GenerateAsteroidBelt {
 
 
 	public static OrbitalObjects Generator(String name, String description, int orbitNumber, Star orbitingAround, char[] orbitalObjectBasicList, double[] orbitalDistancesArray) {
-		
+
 		double eccentricity;
 		double density;
 		String asterioidBeltType;
@@ -27,7 +27,7 @@ public final class GenerateAsteroidBelt {
 
 		double snowLine = 5 * Math.pow(orbitingAround.getLumosity(), 0.5);
 
-		
+
 		if(orbitalDistancesArray[orbitNumber]>snowLine) outerZone=true;
 
 
@@ -45,7 +45,7 @@ public final class GenerateAsteroidBelt {
 
 		// TODO the general type and composition of the belt can be further fleshed out
 		int[] typeArray = new int[] {-2,-1,6,11};
-		String[] asterioidBeltTypeArray = new String[] {"Mettalic","Silicate", "Carbonaceous", "Icy"};
+		String[] asterioidBeltTypeArray = new String[] {"Metallic","Silicate", "Carbonaceous", "Icy", "Icy"};
 		double[] densityArray = new double[] {0,0.8,1,1.2};
 
 		int densMod = Arrays.binarySearch(densityArray, density);
@@ -73,7 +73,8 @@ public final class GenerateAsteroidBelt {
 
 		belt.setMass( (Dice.d10())*Math.pow(10, 4-massBase));
 
-		double beltWitdth = orbitalDistancesArray[orbitNumber+1]-orbitalDistancesArray[orbitNumber-1];
+		double beltWitdth = orbitalDistancesArray[orbitNumber]-orbitalDistancesArray[orbitNumber-1];
+
 
 		if(orbitalObjectBasicList[orbitNumber-1]=='j' || orbitalObjectBasicList[orbitNumber-1]=='j'
 				|| orbitalObjectBasicList[orbitNumber-1]=='J' || orbitalObjectBasicList[orbitNumber-1]=='J') beltWitdth /=2;

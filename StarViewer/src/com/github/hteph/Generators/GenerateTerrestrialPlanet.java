@@ -48,11 +48,6 @@ public final class GenerateTerrestrialPlanet {
 		double greenhouseFactor;
 		double surfaceTemp;
 		String atmoModeration = "No";
-		double[] rangeBandTemperature =new double[10];
-		double[] rangeBandTempSummer =new double[10];
-		double[] rangeBandTempWinter =new double[10];
-		double nightTempMod;
-		double dayTempMod;
 		boolean InnerZone = false;
 		String tectonicActivityGroup;
 		double orbitalInclination;
@@ -64,13 +59,13 @@ public final class GenerateTerrestrialPlanet {
 
 		double snowLine = 5 * Math.pow(orbitingAround.getLumosity(), 0.5);
 		if(orbitDistance<snowLine) InnerZone=true;
-		planet.setOrbitDistance(orbitDistance);
+
 
 // size may not be all, but here it is set
 
 		int a=900;
-		if(orbitalObjectClass=='j') a=20;
-		radius = (Dice.d6()+Dice.d6())*a;
+		if(orbitalObjectClass=='t' || orbitalObjectClass=='m') a=90;
+		radius = (Dice._2d6())*a;
 
 		planet.setRadius((int)radius);
 
@@ -94,9 +89,11 @@ public final class GenerateTerrestrialPlanet {
 //Eccentricity and Inclination
 
 		int eccentryMod=1;
-		if(orbitalObjectClass=='C') eccentryMod=3;
+		if(orbitalObjectClass=='C' || orbitalObjectClass=='C') eccentryMod=3;
+		
 		eccentricity=eccentryMod*(Dice.d6()-1)*(Dice.d6()-1)/(100*Dice.d6());
 		axialTilt = (Dice.d6()-1)+(Dice.d6()-1)/Dice.d6();
+		
 		orbitalInclination = eccentryMod*(Dice.d6()+Dice.d6())/(1+mass/10);	
 
 		planet.setEccentricity(eccentricity);
@@ -186,12 +183,12 @@ public final class GenerateTerrestrialPlanet {
 		if (lifeType.equals("Oxygen Breathing") && baseTemperature>350) greenhouseFactor *=0.9;
 		if (lifeType.equals("Oxygen Breathing") && baseTemperature<250) greenhouseFactor *=1.1;
 
-		// My take on the effect of geenhouse and albdo on temperature max planerary temp is 1000 and the half point is 400
+		// My take on the effect of greenhouse and albedo on temperature max planerary temp is 1000 and the half point is 400
 
 
 		if(hasGaia ) surfaceTemp = 400*(baseTemperature*albedo*greenhouseFactor)/(350+baseTemperature*albedo*greenhouseFactor);
-		else if( atmoPressure>0) surfaceTemp = 1000*(baseTemperature*albedo*greenhouseFactor)/(400+baseTemperature*albedo*greenhouseFactor);
-		else surfaceTemp= baseTemperature* albedo*greenhouseFactor;
+		else if( atmoPressure>0) surfaceTemp = 800*(baseTemperature*albedo*greenhouseFactor)/(400+baseTemperature*albedo*greenhouseFactor);
+		else surfaceTemp = 1200*(baseTemperature*albedo*greenhouseFactor)/(800+baseTemperature*albedo*greenhouseFactor);;
 
 
 		planet.setAtmoshericComposition(atmoshericComposition);
@@ -217,7 +214,7 @@ public final class GenerateTerrestrialPlanet {
 
 		int oxygenMax = (int)Math.max(Dice.d6(),Math.min(100/atmoshericComposition.size(),((Dice.d6()+Dice.d6()+Dice.d6())*2/atmoPressure)));
 
-		System.out.println("oxygenmax ="+oxygenMax);
+		
 		for(int i=0;i<atmoshericComposition.size();i++){
 			if(atmoshericComposition.get(i).getName().equals("CO2") ){
 				if(atmoshericComposition.get(i).getPercentageInAtmo()<=oxygenMax){
@@ -342,7 +339,7 @@ public final class GenerateTerrestrialPlanet {
 		} else {
 			lifeIndex +=3;
 		}
-		System.out.println("Temp Lifeindex= "+lifeIndex);
+		
 
 		if (atmoPressure<0.1){
 			lifeIndex -=10;
@@ -360,7 +357,7 @@ public final class GenerateTerrestrialPlanet {
 		if(atmoshericComposition.contains("CL2")&& Dice.d6()<3) lifeIndex +=3;
 		if(atmoshericComposition.contains("F2")&& Dice.d6()<3) lifeIndex +=3;
 
-		System.out.println("Lifeindex= "+lifeIndex);
+		
 		return (lifeIndex<1)?false:true;
 	}
 
