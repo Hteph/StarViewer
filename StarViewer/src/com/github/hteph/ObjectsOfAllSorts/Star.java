@@ -10,12 +10,14 @@ public class Star extends StellarObject {
 	private double age;
 	private ArrayList<OrbitalObjects> orbitalObjects;
 	private int abundance;
+	private double mass;
 	
 	// Constructor ------------------------------------------------------
 	
 	public Star(String name, String description, double lumosity, double mass, double radius, String classification, double age, int abundance) {
 		
-		super(name, description, mass);
+		super(name, description);
+		
 		this.lumosity = lumosity;
 		this.mass = mass;
 		this.diameter = radius;
@@ -64,7 +66,7 @@ public class Star extends StellarObject {
 	//toString etc
 	
 	public String toString() {
-		return "Star: "+ getName() + " (" + classification + ")\n" + getDescription();
+		return "Star: "+ getName() + " (" + classification + ")";
 	}
 
 

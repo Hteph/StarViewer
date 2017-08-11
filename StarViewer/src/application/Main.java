@@ -1,5 +1,14 @@
 package application;
 	
+import java.util.ArrayList;
+import java.util.Objects;
+
+import com.github.hteph.Generators.StarGenerator;
+import com.github.hteph.Generators.StarSystemGenerator;
+import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
+import com.github.hteph.ObjectsOfAllSorts.Star;
+import com.github.hteph.ObjectsOfAllSorts.StellarObject;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -12,11 +21,22 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
+		
+		ArrayList<ArrayList> testSystem= new ArrayList<>();
+		
+		StellarObject testStar = StarGenerator.Generator();
+		ArrayList<StellarObject> Test = StarSystemGenerator.Generator((Star) testStar);
+		testSystem.add(Test);
+		StellarObject testStar2 = StarGenerator.Generator();
+		ArrayList<StellarObject> Test2 = StarSystemGenerator.Generator((Star) testStar2);
+		testSystem.add(Test2);
+		
 		try {
 			Group root = new Group();
 			Scene scene = new Scene(root,800,1000);
@@ -30,12 +50,19 @@ public class Main extends Application {
 			borderPane.setCenter(tabPane);
 
 			
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < testSystem.size(); i++) {
 	            Tab tab = new Tab();
-	            tab.setText("Tab" + i);            
-	            HBox hbox = new HBox();
-	            hbox.getChildren().add(new Label("Tab" + i));
-	            hbox.setAlignment(Pos.CENTER);            
+	            
+	            String text = testSystem.get(i).get(0).toString();
+	            
+	            tab.setText(text);            
+	            VBox starBox = new VBox();
+	            // Setting the page text
+	            
+	            
+	            
+	            starBox.getChildren().add(new Label(text ));
+	            starBox.setAlignment(Pos.CENTER);            
 	            
 				TabPane orbitTabs = new TabPane();
 				orbitTabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
@@ -43,22 +70,28 @@ public class Main extends Application {
 	            orbitTabs.prefHeightProperty().bind(scene.heightProperty());
 	            orbitTabs.prefWidthProperty().bind(scene.widthProperty());            
 	            
-	            for (int n = 0; n < 5; n++) {
+	            for (int n = 0; n < testSystem.get(i).size(); n++) {
 		            Tab orbit = new Tab();
-		            orbit.setText("Orbit" + n);
-		            HBox orbitbox = new HBox();
-		            orbitbox.getChildren().add(new Label("Orbit" + n));
+		            
+		            
+		            String text2 = ((StellarObject) testSystem.get(i).get(n)).getName();
+		            
+		            orbit.setText(text2);
+		            VBox orbitbox = new VBox();
+		            //orbitbox.getChildren().add(new Label(text2));
 		            
 		            TabPane moonTabs = new TabPane();
 					moonTabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		            moonTabs.setSide(Side.BOTTOM);
 		            moonTabs.prefHeightProperty().bind(scene.heightProperty());
 		            moonTabs.prefWidthProperty().bind(scene.widthProperty());
-		            for (int j = 0; j < 5; j++) {
+		            for (int j = 0; j < 1; j++) {
 		            	Tab moon = new Tab();
-			            moon.setText("Moon" + j);
-			            HBox moonbox = new HBox();
-			            moonbox.getChildren().add(new Label("Moon" + n));
+		            	String text3 =  testSystem.get(i).get(n).toString();
+		            	String objectName = ((StellarObject) testSystem.get(i).get(n)).getName();
+			            moon.setText(objectName);
+			            VBox moonbox = new VBox();
+			            moonbox.getChildren().add(new Label(text3));
 			            moon.setContent(moonbox);
 			            moonTabs.getTabs().add(moon);
 		            }
@@ -66,8 +99,8 @@ public class Main extends Application {
 		            orbit.setContent(orbitbox);
 		            orbitTabs.getTabs().add(orbit);
 	            }
-	            hbox.getChildren().add(orbitTabs);	            
-	            tab.setContent(hbox);
+	            starBox.getChildren().add(orbitTabs);	            
+	            tab.setContent(starBox);
 	            tabPane.getTabs().add(tab);	            
 	        }
 			

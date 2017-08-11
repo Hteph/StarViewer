@@ -23,8 +23,8 @@ public final class StarGenerator {
 		double age; // in billion of earth years
 		int temperature;	
 
-		int testDice =Dice.d6()+Dice.d6()+Dice.d6()-3;
-		double randN =testDice/(15.0+Math.random()/10); //turning the dice roll into a continous sligthly skewed randomnumber.
+		int testDice =Dice._3d6()-3;
+		double randN =testDice/15.0+Math.random()/10; //turning the dice roll into a continous sligthly skewed randomnumber.
 
 
 		mass = 0.04/(0.015+Math.pow(randN,4)); // <-----------------------------------------MOST IMPORTANT STARTING POINT

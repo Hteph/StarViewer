@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Planet extends OrbitalObjects {
 
-	private String name;
-	private String description;
+	
+	
 	private double mass;
 	private int radius;
 	private double gravity;
@@ -262,10 +262,6 @@ public class Planet extends OrbitalObjects {
 
 	public double getOrbitDistance() {
 		return orbitDistance;
-	}
-
-	public void setOrbitDistance(double orbitDistance) {
-		this.orbitDistance = orbitDistance;
 	}
 
 

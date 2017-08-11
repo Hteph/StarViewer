@@ -4,7 +4,7 @@ public abstract class StellarObject {
 	
 	protected String name;
 	protected String description;
-	protected double mass;
+
 
 
 	
@@ -12,11 +12,11 @@ public abstract class StellarObject {
 	
 	//Constructor -------------------------------------------------------------
 
-	public StellarObject(String name, String description, double mass) {
+	public StellarObject(String name, String description) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.mass = mass;
+
 	}
 	
 	
@@ -32,9 +32,7 @@ public abstract class StellarObject {
 		return description;		
 	}
 
-	public double getMass() {
-		return mass;
-	}
+
 
 	
 }

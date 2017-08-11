@@ -1,8 +1,8 @@
 package com.github.hteph.MainModules;
 
-import com.github.hteph.Generators.GenerateTerrestrialPlanet;
+import java.util.ArrayList;
 import com.github.hteph.Generators.StarGenerator;
-import com.github.hteph.ObjectsOfAllSorts.Planet;
+import com.github.hteph.Generators.StarSystemGenerator;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 
@@ -17,10 +17,15 @@ public class MainConnectorOfStuff {
 			
 		StellarObject testStar = StarGenerator.Generator();
 		
-		Planet testPlanet = (Planet) GenerateTerrestrialPlanet.Generator("Testus", "SomethingSomething", 1, 'J', (Star) testStar);
+		ArrayList<StellarObject> Test = StarSystemGenerator.Generator((Star) testStar);
 		
-		System.out.println(testStar.toString());
-		System.out.println(testPlanet.toString());
+		int i=0;
+		
+		while(i<Test.size()) {
+		System.out.println(Test.get(i).toString());
+		i++;
+		}
+
 
 	}
 
