@@ -1,4 +1,4 @@
-package application;
+package com.github.hteph.GUI;
 	
 import javafx.application.Application;
 import javafx.geometry.Pos;
