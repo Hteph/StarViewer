@@ -1,10 +1,7 @@
 package com.github.hteph.Generators;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -13,18 +10,19 @@ import com.github.hteph.ObjectsOfAllSorts.AmosphericGases;
 import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Planet;
 import com.github.hteph.ObjectsOfAllSorts.Star;
-import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.Dice;
 
-public final class GenerateTerrestrialPlanet {
+public final class generateMoon {
 
-
-	private GenerateTerrestrialPlanet() {
-		// No instances should be created by this method
+	// Constructor ----------------------------------------------
+	
+	private generateMoon() {
+		//No instances of this, please!
 	}
 
+	//Methods --------------------------------------------------
 
-	public static OrbitalObjects Generator(String name, String description, double orbitDistance, char orbitalObjectClass, Star orbitingAround) {
+	public static OrbitalObjects Generator(String name, String description, OrbitalObjects orbitingAround, boolean InnerZone) {
 		
 		double mass;
 		int radius;
@@ -55,16 +53,16 @@ public final class GenerateTerrestrialPlanet {
 		boolean hasGaia;
 		String lifeType;
 
-		Planet planet = new Planet (name, description, orbitDistance, orbitingAround);
+		Moon moon = new Moon (name, description, orbitingAround.getOrbitDistance(), orbitingAround);
+		
 
-		double snowLine = 5 * Math.pow(orbitingAround.getLumosity(), 0.5);
-		if(orbitDistance<snowLine) InnerZone=true;
-
-
+		
 // size may not be all, but here it is set
 
 		int a=900;
-		if(orbitalObjectClass=='t' || orbitalObjectClass=='m' || orbitalObjectClass=='c') a=90;
+		if(orbitalObjectClass=='t' || orbitalObjectClass=='m') a=90;
+		
+		
 		radius = (Dice._2d6())*a;
 
 		planet.setRadius((int)radius);
@@ -89,11 +87,10 @@ public final class GenerateTerrestrialPlanet {
 //Eccentricity and Inclination
 
 		int eccentryMod=1;
-		if(orbitalObjectClass=='C' || orbitalObjectClass=='c') eccentryMod +=3;
+		if(orbitalObjectClass=='C' || orbitalObjectClass=='C') eccentryMod=3;
 		
 		eccentricity=eccentryMod*(Dice.d6()-1)*(Dice.d6()-1)/(100*Dice.d6());
-		
-		axialTilt = (int)(10*Dice._3d6()/2*Math.random());
+		axialTilt = (Dice.d6()-1)+(Dice.d6()-1)/Dice.d6();
 		
 		orbitalInclination = eccentryMod*(Dice.d6()+Dice.d6())/(1+mass/10);	
 
@@ -118,8 +115,6 @@ public final class GenerateTerrestrialPlanet {
 		planet.setRotationalPeriod(rotationalPeriod);
 
 //TODO tectonics should include moons!
-		
-		//TODO c type should have special treatment
 
 		tectonicCore = findTectonicGroup(InnerZone, density);
 		tectonicActivity = (5+Dice.d6()+Dice.d6()-2)*Math.pow(mass, 0.5)/orbitingAround.getAge();
@@ -162,17 +157,11 @@ public final class GenerateTerrestrialPlanet {
 		atmoshericComposition = makeAtmoshpere(orbitingAround, baseTemperature, tectonicActivityGroup, radius, gravity, boilingAtmo);
 		atmoPressure = findAtmoPressure(tectonicActivityGroup, hydrosphere, boilingAtmo, mass, atmoshericComposition);
 
-		// TODO Special considerations for c objects, this should be expanded upon when these gets more details
-		if (orbitalObjectClass=='c') {
-			if(Dice.d6()<6) atmoPressure=0;
-			else atmoPressure =0.001;
-		}
-		
-		if (atmoPressure==0) atmoshericComposition.clear();
-
 		double nicePressure = ((int)(atmoPressure*1000))/1000.0;
 		if(nicePressure==0 && atmoPressure>0) nicePressure=0.001;
-		
+
+
+
 		planet.setAtmoPressure(nicePressure);
 
 		// The composition could be adjusted for the existence of life, so is set below
@@ -1027,4 +1016,5 @@ public final class GenerateTerrestrialPlanet {
 
 
 
+	// Getters and Setters -------------------------------------
 }

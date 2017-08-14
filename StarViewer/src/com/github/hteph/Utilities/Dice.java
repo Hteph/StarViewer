@@ -1,6 +1,12 @@
 package com.github.hteph.Utilities;
 
-public class Dice {
+public final class Dice {
+	
+	
+	private Dice() {
+		
+		//No instances of this class please
+	}
 	
 	public static int d6(){
 		int a =(int)(1+Math.random()*6);

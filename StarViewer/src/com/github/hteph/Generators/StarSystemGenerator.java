@@ -1,6 +1,7 @@
 package com.github.hteph.Generators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
@@ -18,6 +19,7 @@ public final class StarSystemGenerator  {
 
 	//Methods ---------------------------------------------------------
 	public static ArrayList<StellarObject> Generator(Star star){
+		
 		double innerLimit = Math.max(0.2 * star.getMass() , 0.0088 * Math.pow(star.getLumosity(), 0.5));
 		//double innerHabitable = 0.95 * Math.pow(star.getLumosity(), 0.5); Try to use without locking to goldilock theory
 		//double outerHabitable = 1.3 * Math.pow(star.getLumosity(), 0.5);
@@ -28,7 +30,7 @@ public final class StarSystemGenerator  {
 		starSystemList.add(0,star);
 
 		//how many orbits?
-		int numberOfOrbits = Dice._2d6();
+		int numberOfOrbits = Dice._2d6() + (int)Math.sqrt(star.getMass()-2);
 		
 		
 		int maxNumberOfOrbits = Math.min(numberOfOrbits, (int)star.getMass());
@@ -40,28 +42,27 @@ public final class StarSystemGenerator  {
 
 		
 		//set the orbit distances
-		for(int i=0;i<numberOfOrbits;i++) {
-			if(i==0){
-				orbitalDistancesArray[0] = 0.05*Math.pow(star.getMass(),2)*(Dice.d6()+Dice.d6());
-			}else{
-				orbitalDistancesArray[i] = 0.1+orbitalDistancesArray[i-1]*(1.1+(Dice.d10()*0.1));
-			}
+		
+		orbitalDistancesArray[0] = 0.05*Math.pow(star.getMass(),2)*(Dice.d6()+Dice.d6());
+		for(int i=1;i<numberOfOrbits;i++) {
+				orbitalDistancesArray[i] = 0.1+orbitalDistancesArray[i-1]*(1.1+(Dice.d10()*0.1));	
 		}
 
 		//populating the orbits, empty at start
 		char[] orbitalObjectBasicList = new char[orbitalDistancesArray.length];		
 		for(int i=0;i<numberOfOrbits;i++){
 			orbitalObjectBasicList[i]='-';
-			System.out.println(orbitalDistancesArray[i]);
+
 		}
 		
 
 
 		//Dominant Gas giant (with accompanying Asteroid belt)?
 		if(Dice.d6()<6){
-			for(int i=numberOfOrbits-1;i>0;i--) {
+			for(int i=numberOfOrbits-2;i>0;i--) {
 				
 				if(orbitalDistancesArray[i]<snowLine){
+
 					orbitalObjectBasicList[i+1]='J';
 					if(Dice.d6()<6) orbitalObjectBasicList[i]='A';
 					break;
@@ -86,7 +87,7 @@ public final class StarSystemGenerator  {
 
 		}
 		
-		System.out.println(orbitalObjectBasicList);
+
 		
 		
 		//Detailed bodies
@@ -109,43 +110,43 @@ public final class StarSystemGenerator  {
 			case 'j':
 				name = "Gas Giant";
 				description = " A relatively small Gas Giant";
-				starSystemList.add(JovianGenerator.Generator(name, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(JovianGenerator.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 				
 			case 'J':
 				name = "Super Jovian";
 				description = "A truly massive Gas Giant, dominating the whole system";
-				starSystemList.add(JovianGenerator.Generator(name, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(JovianGenerator.Generator(name +numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 				
 			case 't': 
 				name = "Planetoid";
 				description = "Small and nicely rounded";
-				starSystemList.add(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 			case 'T':
 				name = "Terrestial";
 				description = "Large and round";
-				starSystemList.add(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 			case 'C':
 				name = "Catched Terrestial";
 				description = "Large and round, but from not originated in this system";
-				starSystemList.add(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 
 			case 'c': //TODO this should use a special generator to allow for strange stuff as hulks, ancient stations etc etc
-				starSystemList.add(GenerateTerrestrialPlanet.Generator("Catched object" +numeral, "Smaller than a planet, but not one of those asteroids, and not from here to start with", orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator("Catched object" +numeral, "Smaller than a planet, but not one of those asteroids, and not from here to start with", orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 
 			case 'A':
-				starSystemList.add(GenerateAsteroidBelt.Generator("Asterioidbelt "+astroidBeltCounter, "A bunch of blocks", i, star, orbitalObjectBasicList, orbitalDistancesArray));
+				star.setOrbitalObjects(GenerateAsteroidBelt.Generator("Asterioidbelt "+astroidBeltCounter, "A bunch of blocks", i, star, orbitalObjectBasicList, orbitalDistancesArray));
 				astroidBeltCounter++;
 				break;
 
@@ -155,6 +156,7 @@ public final class StarSystemGenerator  {
 			}
 		}
 
+
 		return starSystemList;
 	}
 
@@ -162,52 +164,39 @@ public final class StarSystemGenerator  {
 
 
 
-	//		return orbitalObjectList;
+
 
 
 
 // internal methods
 	private static char generateOuterObject() {
+		
+		char objectType;
+		char[] typeArray = {'j','E','c','t', 'T', 'A', 'C', 'J', 'E', 'E'};
+		int[]  roll= {3,4,5,8,11,15,17,18};
+		
+		int retVal = Arrays.binarySearch(roll, Dice._3d6());		
 
-		switch (Dice._3d6()) {
-		case 3:case 4:
-			return 'j';// Small jovian
-		case 5:	case 6:case 7:
-			return 'c'; //Catched asteroid
-		case 8:case 9:case 10:
-			return 't';//small terrestial planet
-		case 11:case 12:case 13:case 14:
-			return 'T';//terrestial planet
-		case 15:case 16:
-			return 'A';//Asteroid belt
-		case 17:
-			return 'C';//Captured planet
-		case 18:
-			return 'J';//Super jovian
-		default:
-			return 'E';// Empty orbit
-		}
+		if(retVal<0) objectType = typeArray[-retVal-1];
+		else objectType = typeArray[retVal];
+
+		return objectType;
+		
 	}
-
+	
 	private static char generateInnerObject() {
-		switch (Dice._3d6()) {
-		case 3:case 4:
-			return 'A'; //Asteroid belt
-		case 5:	case 6:case 7:
-			return 'T'; //terrestial planet
-		case 8:case 9:case 10:
-			return 'j'; // Small jovian
-		case 11:case 12:case 13:case 14:
-			return 'J'; //Super jovian
-		case 15:case 16:
-			return 'T'; //Terrstial planet
-		case 17:
-			return 'C'; //Captured planet
-		case 18:
-			return 'c'; // captured asteroid
-		default:
-			return 'E'; // Empty orbit
-		}
+	
+	char objectType;
+	char[] typeArray = {'A','T','j','J', 'E', 'C', 'c', 'E'};
+	int[]  roll= {4,8,11,14,15,17,18};
+	
+	int retVal = Arrays.binarySearch(roll, Dice._3d6());		
+
+	if(retVal<0) objectType = typeArray[-retVal-1];
+	else objectType = typeArray[retVal];
+
+	return objectType;
+
 	}
 
 }

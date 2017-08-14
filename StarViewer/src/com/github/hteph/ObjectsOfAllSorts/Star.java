@@ -2,13 +2,15 @@ package com.github.hteph.ObjectsOfAllSorts;
 
 import java.util.ArrayList;
 
+import com.github.hteph.Utilities.numberUtilities;
+
 public class Star extends StellarObject {
 	
 	private double lumosity;	
 	private double radius;
 	private String classification;
 	private double age;
-	private ArrayList<OrbitalObjects> orbitalObjects;
+	private ArrayList<OrbitalObjects> orbitalObjects = new ArrayList<>();
 	private int abundance;
 	private double mass;
 	
@@ -18,11 +20,13 @@ public class Star extends StellarObject {
 		
 		super(name, description);
 		
-		this.lumosity = lumosity;
-		this.radius = radius;
+		this.lumosity = numberUtilities.nicefyDouble(lumosity);
+		this.radius = numberUtilities.nicefyDouble(radius);
 		this.classification = classification;
-		this.age = age;
+		this.age = numberUtilities.nicefyDouble(age);
 		this.abundance = abundance;
+		this.mass = numberUtilities.nicefyDouble(mass);
+		
 	}
 	
 	
@@ -54,7 +58,10 @@ public class Star extends StellarObject {
 
 
 	public void setOrbitalObjects(OrbitalObjects orbitalObjects) {
+		
+
 		this.orbitalObjects.add(orbitalObjects);
+
 	}
 	
 	
@@ -63,6 +70,14 @@ public class Star extends StellarObject {
 	public String toString() {
 		return "Star: "+ getName() + " (" + classification + ")";
 	}
+
+
+	public double getMass() {
+		return mass;
+	}
+
+
+
 
 
 

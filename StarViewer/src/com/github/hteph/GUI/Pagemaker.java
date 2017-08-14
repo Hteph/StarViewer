@@ -5,6 +5,7 @@ import java.awt.Label;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 
+import javafx.animation.RotateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -16,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public final class Pagemaker {
 
@@ -52,7 +54,13 @@ public final class Pagemaker {
 
 		Sphere starSphere = new Sphere(100);
 		starSphere.setTranslateX(200); 
-		starSphere.setTranslateY(150);  
+		starSphere.setTranslateY(150);
+		
+//	     RotateTransition rt = new RotateTransition(Duration.millis(3000), starSphere);
+//	     rt.setByAngle(180);
+//	     rt.setCycleCount(4);
+//	     rt.setAutoReverse(true);
+//	     rt.play();
 		Group displayStar = new Group(starSphere);
 
 		HBox intro = new HBox(description, displayStar);

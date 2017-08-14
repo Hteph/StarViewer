@@ -53,10 +53,10 @@ public final class JovianGenerator {
 		}
 		else {
 			radius = (Dice._2d6())*7000;
-			
+
 			if(InnerZone) density = 0.1*Dice.d10()*0.025;
 			else density = 0.08*Dice.d10()*0.025;
-			
+
 			mass = (int) Math.pow(radius/6380,3)*density;
 			gasGiant.setRadius((int)radius);
 			gasGiant.setMass(mass);
@@ -104,13 +104,13 @@ public final class JovianGenerator {
 		gasGiant.setMagneticField(magneticField);
 
 //Temperature
-baseTemperature = (int) (255/Math.sqrt((orbitDistance/Math.sqrt(orbitingAround.getLumosity()))));
+		baseTemperature = (int) (255/Math.sqrt((orbitDistance/Math.sqrt(orbitingAround.getLumosity()))));
 
-gasGiant.setBaseTemperature(baseTemperature);
+		gasGiant.setBaseTemperature(baseTemperature);
 
 
 
-return (OrbitalObjects) gasGiant;
+		return (OrbitalObjects) gasGiant;
 	}
 
 

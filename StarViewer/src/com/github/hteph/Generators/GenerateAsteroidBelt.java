@@ -72,9 +72,11 @@ public final class GenerateAsteroidBelt {
 
 
 		belt.setMass( (Dice.d10())*Math.pow(10, 4-massBase));
-
-		double beltWitdth = orbitalDistancesArray[orbitNumber]-orbitalDistancesArray[orbitNumber-1];
-
+		
+		double beltWitdth=0;
+		
+		if(orbitNumber>0) beltWitdth = orbitalDistancesArray[orbitNumber]-orbitalDistancesArray[orbitNumber-1];
+		else beltWitdth = orbitalDistancesArray[orbitNumber]/2;
 
 		if(orbitalObjectBasicList[orbitNumber-1]=='j' || orbitalObjectBasicList[orbitNumber-1]=='j'
 				|| orbitalObjectBasicList[orbitNumber-1]=='J' || orbitalObjectBasicList[orbitNumber-1]=='J') beltWitdth /=2;
