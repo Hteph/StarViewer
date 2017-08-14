@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Star extends StellarObject {
 	
 	private double lumosity;	
-	private double diameter;
+	private double radius;
 	private String classification;
 	private double age;
 	private ArrayList<OrbitalObjects> orbitalObjects;
@@ -19,8 +19,7 @@ public class Star extends StellarObject {
 		super(name, description);
 		
 		this.lumosity = lumosity;
-		this.mass = mass;
-		this.diameter = radius;
+		this.radius = radius;
 		this.classification = classification;
 		this.age = age;
 		this.abundance = abundance;
@@ -33,12 +32,8 @@ public class Star extends StellarObject {
 		return lumosity;
 	}
 
-	public double getMass() {
-		return mass;
-	}
-
 	public double getRadius() {
-		return diameter;
+		return radius;
 	}
 
 	public String getClassification() {
