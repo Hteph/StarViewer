@@ -28,9 +28,9 @@ public final class StarGenerator {
 		double randN =testDice/(15.0+Math.random()/10); //turning the dice roll into a continous sligthly skewed randomnumber.
 
 
-		mass = 0.045/(0.015+Math.pow(randN,5)); // <-----------------------------------------MOST IMPORTANT STARTING POINT
+		mass = 0.045/(0.001+Math.pow(randN,5)); // <-----------------------------------------MOST IMPORTANT STARTING POINT
 		diameter= Math.pow(mass,2/3.0);
-		temperature = 100*(int)((100*Math.round(380+4800*Math.pow(mass, 0.5))/100)*(0.8+Math.random()*0.4)/100);	
+		temperature = 100*(int)((Math.round((500+4800*Math.pow(mass, 0.5)))*(0.8+Math.random()*0.4))/100);	
 		lumosity = Math.pow(mass, 3.5);
 		double inverseMass=1/mass;
 		double maxAge =10*Math.pow(inverseMass, 2.5);
@@ -65,6 +65,8 @@ public final class StarGenerator {
 		int decimal;
 		String classification;
 
+		System.out.println(temperatureClass+" "+temperature);
+		
 		int retValue =  Arrays.binarySearch(temperatureClass,temperature);
 
 		if(retValue<0) decimal =Math.min(9, 10- (int) (10.0*(temperature-temperatureClass[-retValue-2])/(1.0*temperatureClass[-retValue-1]-temperatureClass[-retValue-2])));

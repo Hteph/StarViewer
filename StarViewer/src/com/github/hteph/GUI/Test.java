@@ -4,6 +4,7 @@ import java.awt.Label;
 
 import com.github.hteph.Generators.StarGenerator;
 import com.github.hteph.Generators.StarSystemGenerator;
+import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 
 import javafx.application.Application;
@@ -17,8 +18,11 @@ import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -129,12 +133,27 @@ public class Test extends Application{
 
 		VBox systemsObjects = new VBox();
 
-		for(int i=0; i<star.getOrbitalObjects().size();i++){
-			systemsObjects.getChildren().add(new Text(star.getOrbitalObjects().get(i).getName()));
-		}
-		TableView table = new TableView();
 
-		secondTitledPane.setContent(systemsObjects);
+		TableView<OrbitalObjects> table = new TableView<OrbitalObjects>();
+		ObservableList<OrbitalObjects> systemOrbitsObjects = FXCollections.observableArrayList();
+		
+		for(int i=0; i<star.getOrbitalObjects().size();i++){
+			systemOrbitsObjects.add(star.getOrbitalObjects().get(i));
+		}
+		table.itemsProperty().set(systemOrbitsObjects);
+		TableColumn<OrbitalObjects, Double> orbit = new TableColumn<>("Orbit Distance [Au]");
+		TableColumn<OrbitalObjects, String> name = new TableColumn<>("Object Name");
+		TableColumn<OrbitalObjects, String> type = new TableColumn<>("Object Type");
+		TableColumn<OrbitalObjects, String> life = new TableColumn<>("Native Life");
+		
+		orbit.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, Double>("orbitDistance"));
+		name.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("name"));
+		type.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("classificationName"));
+		life.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("lifeType"));
+		
+		table.getColumns().addAll(orbit, name, type, life);
+		
+		secondTitledPane.setContent(table);	
 
 		Accordion furtherFacts= new Accordion();      
 		furtherFacts.getPanes().addAll(firstTitledPane, secondTitledPane);

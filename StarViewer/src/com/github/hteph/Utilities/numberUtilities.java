@@ -1,5 +1,7 @@
 package com.github.hteph.Utilities;
 
+import java.text.DecimalFormat;
+
 public final class numberUtilities {
 	
 	
@@ -15,14 +17,10 @@ public final class numberUtilities {
 	
 	public static double nicefyDouble(double number) {
 		
-		int divisor =(int) Math.log10(number);
 		
-		divisor +=3;
-		
-		if(divisor<1) return number = 0.001;
-		
-		number = ((int) (number*Math.pow(10, divisor)))/Math.pow(10, divisor);
-		
+	if(number<0)	number = (Math.round(number*1000))/1000.0;
+	else if(number<100) number = (Math.round(number*100))/100.0;
+	else  number = (Math.pow(10, Math.log10(number))*(int) number/Math.pow(10, Math.log10(number)-2));
 		
 		return number;
 	}

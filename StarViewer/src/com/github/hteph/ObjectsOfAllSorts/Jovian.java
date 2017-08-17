@@ -11,7 +11,7 @@ public class Jovian extends OrbitalObjects {
 	private double orbitalPeriod; //in earth years
 	private double axialTilt;
 	private double eccentricity;
-
+	private String classificationName;
 	private double rotationalPeriod;
 
 	private double magneticField;
@@ -26,9 +26,9 @@ public class Jovian extends OrbitalObjects {
 	
 	// Constructor ----------------------------------------------
 
-	public Jovian(String name, String description, double orbitDistance, StellarObject orbitingAround) {
+	public Jovian(String name, String description, String classificationName, double orbitDistance, StellarObject orbitingAround) {
 		super(name, description, orbitDistance, orbitingAround);
-		
+		this.classificationName =classificationName;
 	}
 
 	
@@ -129,4 +129,12 @@ public class Jovian extends OrbitalObjects {
 		this.mass = (int) mass;
 		
 	}
+
+
+
+	public String getClassificationName() {
+		return classificationName;
+	}
+
+
 }

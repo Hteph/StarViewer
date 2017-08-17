@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Planet extends OrbitalObjects {
 
 	
-	private String objectClass;
+
 	private double mass;
 	private int radius;
 	private double gravity;
@@ -15,7 +15,6 @@ public class Planet extends OrbitalObjects {
 	private double eccentricity;
 	private boolean tidelocked;
 	private double rotationalPeriod;
-	private double orbitDistance;
 
 	private String tectonicCore;
 	private double magneticField;
@@ -31,14 +30,16 @@ public class Planet extends OrbitalObjects {
 	private double dayTempMod;
 	private String tectonicActivityGroup;
 	private double orbitalInclination;
-	private boolean boilingAtmo =false;
 
+	
+	private String classificationName;
 	private String lifeType;
 
 	// Constructor ----------------------------------------------
-	public Planet(String name, String description, String objectClass, double orbitDistance, StellarObject orbitingAround) {
+	public Planet(String name, String description, String classificationName, double orbitDistance, StellarObject orbitingAround) {
 		super(name, description, orbitDistance, orbitingAround);
-
+		this.classificationName=classificationName;
+		
 
 	}
 	//Methods --------------------------------------------------
@@ -243,13 +244,6 @@ public class Planet extends OrbitalObjects {
 		this.orbitalInclination = orbitalInclination;
 	}
 
-	public boolean isBoilingAtmo() {
-		return boilingAtmo;
-	}
-
-	public void setBoilingAtmo(boolean boilingAtmo) {
-		this.boilingAtmo = boilingAtmo;
-	}
 
 
 	public String getLifeType() {
@@ -263,6 +257,11 @@ public class Planet extends OrbitalObjects {
 	public double getOrbitDistance() {
 		return orbitDistance;
 	}
+
+	public String getClassificationName() {
+		return classificationName;
+	}
+
 
 
 }

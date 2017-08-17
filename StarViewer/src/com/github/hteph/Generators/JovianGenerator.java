@@ -16,16 +16,16 @@ public final class JovianGenerator {
 
 	//Methods --------------------------------------------------
 
-	public static OrbitalObjects Generator(String name, String description, double orbitDistance, char orbitalObjectClass, Star orbitingAround) {
+	public static OrbitalObjects Generator(String name, String description, String classificationName, double orbitDistance, char orbitalObjectClass, Star orbitingAround) {
 
 		double mass;
 		int radius;
-
+		
 		double density;
 		double orbitalPeriod; //in earth years
 		double axialTilt;
 		double eccentricity;
-
+		
 		double rotationalPeriod;
 
 		double magneticField;
@@ -38,7 +38,7 @@ public final class JovianGenerator {
 
 		String lifeType; // TODO allow for Jovian life in the future
 
-		Jovian gasGiant = new Jovian (name, description, orbitDistance, orbitingAround);
+		Jovian gasGiant = new Jovian (name, description, classificationName, orbitDistance, orbitingAround);
 
 		double snowLine = 5 * Math.pow(orbitingAround.getLumosity(), 0.5);
 		if(orbitDistance<snowLine) InnerZone=true;

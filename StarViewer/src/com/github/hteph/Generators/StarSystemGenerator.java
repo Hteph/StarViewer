@@ -7,6 +7,7 @@ import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.Dice;
+import com.github.hteph.Utilities.numberUtilities;
 
 public final class StarSystemGenerator  {
 
@@ -31,31 +32,27 @@ public final class StarSystemGenerator  {
 
 		//how many orbits?
 		int numberOfOrbits = Dice._2d6() + (int)Math.sqrt(star.getMass()-2);
-		
-		
+			
 		int maxNumberOfOrbits = Math.min(numberOfOrbits, (int)star.getMass());
 		
 		for(int i=0;i<maxNumberOfOrbits;i++) numberOfOrbits++;
 		
 		double[] orbitalDistancesArray = new double[numberOfOrbits];
-		
-
-		
+			
 		//set the orbit distances
 		
-		orbitalDistancesArray[0] = 0.05*Math.pow(star.getMass(),2)*(Dice.d6()+Dice.d6());
+		orbitalDistancesArray[0] =((int)(100* (0.05*Math.pow(star.getMass(),2)*(Dice.d6()+Dice.d6()))))/100;
+		
 		for(int i=1;i<numberOfOrbits;i++) {
-				orbitalDistancesArray[i] = 0.1+orbitalDistancesArray[i-1]*(1.1+(Dice.d10()*0.1));	
+
+				orbitalDistancesArray[i] = numberUtilities.nicefyDouble(0.1+orbitalDistancesArray[i-1]*(1.1+(Dice.d10()*0.1)));	
 		}
 
 		//populating the orbits, empty at start
 		char[] orbitalObjectBasicList = new char[orbitalDistancesArray.length];		
-		for(int i=0;i<numberOfOrbits;i++){
-			orbitalObjectBasicList[i]='-';
-
-		}
+		for(int i=0;i<numberOfOrbits;i++) orbitalObjectBasicList[i]='-';
+			
 		
-
 
 		//Dominant Gas giant (with accompanying Asteroid belt)?
 		if(Dice.d6()<6){
@@ -69,7 +66,6 @@ public final class StarSystemGenerator  {
 				}
 			}
 		}
-
 		
 		
 		//General orbit content
@@ -87,9 +83,6 @@ public final class StarSystemGenerator  {
 
 		}
 		
-
-		
-		
 		//Detailed bodies
 		String[] romNum = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
 		int astroidBeltCounter=1;
@@ -104,44 +97,44 @@ public final class StarSystemGenerator  {
 				numeral =" XX";
 			}
 			
-			String name = "Something";
+			String classificationName = "Something";
 			String description = "Something, Something";
 			switch (orbitalObjectBasicList[i]) {
 			case 'j':
-				name = "Gas Giant";
+				classificationName = "Gas Giant";
 				description = " A relatively small Gas Giant";
-				star.setOrbitalObjects(JovianGenerator.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(JovianGenerator.Generator(star.getName()+" "+numeral, description, classificationName,orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 				
 			case 'J':
-				name = "Super Jovian";
+				classificationName = "Super Jovian";
 				description = "A truly massive Gas Giant, dominating the whole system";
-				star.setOrbitalObjects(JovianGenerator.Generator(name +numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(JovianGenerator.Generator(star.getName()+" "+numeral, description, classificationName,orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 				
 			case 't': 
-				name = "Planetoid";
+				classificationName = "Planetoid";
 				description = "Small and nicely rounded";
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 			case 'T':
-				name = "Terrestial";
+				classificationName = "Terrestial";
 				description = "Large and round";
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 			case 'C':
-				name = "Catched Terrestial";
+				classificationName = "Catched Terrestial";
 				description = "Large and round, but from not originated in this system";
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(name+numeral, description, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 
 			case 'c': //TODO this should use a special generator to allow for strange stuff as hulks, ancient stations etc etc
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator("Catched object" +numeral, "Smaller than a planet, but not one of those asteroids, and not from here to start with", orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" " +numeral, "Smaller than a planet, but not one of those asteroids, and not from here to start with","Catched object", orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
 				objectCounter++;
 				break;
 
@@ -160,19 +153,11 @@ public final class StarSystemGenerator  {
 		return starSystemList;
 	}
 
-
-
-
-
-
-
-
-
 // internal methods
 	private static char generateOuterObject() {
 		
 		char objectType;
-		char[] typeArray = {'j','E','c','t', 'T', 'A', 'C', 'J', 'E', 'E'};
+		char[] typeArray = {'c','A','j','E','t','T','C','J', 'E', 'E'};
 		int[]  roll= {3,4,5,8,11,15,17,18};
 		
 		int retVal = Arrays.binarySearch(roll, Dice._3d6());		
@@ -187,8 +172,8 @@ public final class StarSystemGenerator  {
 	private static char generateInnerObject() {
 	
 	char objectType;
-	char[] typeArray = {'A','T','j','J', 'E', 'C', 'c', 'E'};
-	int[]  roll= {4,8,11,14,15,17,18};
+	char[] typeArray = {'A','t','T','j', 'E', 'C','J', 'E'};
+	int[]  roll= {4,8,13,14,15,17,18};
 	
 	int retVal = Arrays.binarySearch(roll, Dice._3d6());		
 
