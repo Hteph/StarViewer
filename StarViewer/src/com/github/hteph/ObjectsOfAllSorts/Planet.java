@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Planet extends OrbitalObjects {
 
 	
-	
+	private String objectClass;
 	private double mass;
 	private int radius;
 	private double gravity;
@@ -36,7 +36,7 @@ public class Planet extends OrbitalObjects {
 	private String lifeType;
 
 	// Constructor ----------------------------------------------
-	public Planet(String name, String description, double orbitDistance, StellarObject orbitingAround) {
+	public Planet(String name, String description, String objectClass, double orbitDistance, StellarObject orbitingAround) {
 		super(name, description, orbitDistance, orbitingAround);
 
 

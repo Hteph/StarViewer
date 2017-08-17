@@ -24,7 +24,8 @@ public final class GenerateTerrestrialPlanet {
 	}
 
 
-	public static OrbitalObjects Generator(String name, String description, double orbitDistance, char orbitalObjectClass, Star orbitingAround) {
+	public static OrbitalObjects Generator(String name, String description, String objectClass, double orbitDistance, char orbitalObjectClass, Star orbitingAround) {
+		
 		
 		double mass;
 		int radius;
@@ -55,7 +56,7 @@ public final class GenerateTerrestrialPlanet {
 		boolean hasGaia;
 		String lifeType;
 
-		Planet planet = new Planet (name, description, orbitDistance, orbitingAround);
+		Planet planet = new Planet (name, description, objectClass, orbitDistance, orbitingAround);
 
 		double snowLine = 5 * Math.pow(orbitingAround.getLumosity(), 0.5);
 		if(orbitDistance<snowLine) InnerZone=true;

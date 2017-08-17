@@ -2,12 +2,6 @@ package com.github.hteph.ObjectsOfAllSorts;
 
 public class AsteroidBelt extends OrbitalObjects{
 
-
-	public AsteroidBelt(String name, String description, double orbitDistance, StellarObject orbitingAround) {
-		super(name, description, orbitDistance, orbitingAround);
-		// TODO Auto-generated constructor stub
-	}
-
 	private double mass;	
 	private double eccentricity;
 	private String asterioidBeltType;
@@ -16,7 +10,10 @@ public class AsteroidBelt extends OrbitalObjects{
 
 
 	// Constructor ----------------------------------------------
-
+	public AsteroidBelt(String name, String description, double orbitDistance, StellarObject orbitingAround) {
+		super(name, description, orbitDistance, orbitingAround);
+		// TODO Auto-generated constructor stub
+	}
 	//Methods --------------------------------------------------
 
 	@Override
@@ -27,7 +24,14 @@ public class AsteroidBelt extends OrbitalObjects{
 	//Internal Methods ----------------------------------------
 
 	// Getters and Setters -------------------------------------
+	private String objectClass="Asteroid Belt";
+	public String getObjectClass() {
+		return objectClass;
+	}
 
+	public void setAsteroidBeltWidth(double asteroidBeltWidth) {
+		this.asteroidBeltWidth = asteroidBeltWidth;
+	}
 	public double getMass() {
 		return mass;
 	}
