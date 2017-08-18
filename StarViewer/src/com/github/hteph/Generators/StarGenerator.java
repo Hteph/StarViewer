@@ -65,7 +65,7 @@ public final class StarGenerator {
 		int decimal;
 		String classification;
 
-		System.out.println(temperatureClass+" "+temperature);
+
 		
 		int retValue =  Arrays.binarySearch(temperatureClass,temperature);
 

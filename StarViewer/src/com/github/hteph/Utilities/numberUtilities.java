@@ -20,7 +20,7 @@ public final class numberUtilities {
 		
 	if(number<0)	number = (Math.round(number*1000))/1000.0;
 	else if(number<100) number = (Math.round(number*100))/100.0;
-	else  number = (Math.pow(10, Math.log10(number))*(int) number/Math.pow(10, Math.log10(number)-2));
+	else  number = (Math.pow(10, Math.log10(number)-2)*(int) number/Math.pow(10, Math.log10(number)-2));
 		
 		return number;
 	}
