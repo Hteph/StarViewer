@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.github.hteph.Generators.StarGenerator;
 import com.github.hteph.Generators.StarSystemGenerator;
+import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 
@@ -50,15 +51,13 @@ public class Main extends Application {
 					for (int i = 0; i < testSystem.size(); i++) {
 			            Tab tab = new Tab();
 			            
-			            String text = testSystem.get(i).get(0).toString();
+			            String starSystemName = testSystem.get(i).get(0).toString();
+			            Star centralStar = (Star) testSystem.get(i).get(0);
 			            
-			            tab.setText(text);            
+			            tab.setText(starSystemName);          
 			            VBox starBox = new VBox();
-			            // Setting the page text
-			            
-			            
-			            
-			            starBox.getChildren().add(new Label(text ));
+
+			            starBox.getChildren().add(new Label(starSystemName));
 			            starBox.setAlignment(Pos.CENTER);            
 			            
 						TabPane orbitTabs = new TabPane();
@@ -67,13 +66,14 @@ public class Main extends Application {
 			            orbitTabs.prefHeightProperty().bind(scene.heightProperty());
 			            orbitTabs.prefWidthProperty().bind(scene.widthProperty());            
 			            
-			            for (int n = 0; n < ((Star) testSystem.get(i).get(0)).getOrbitalObjects().size(); n++) {
+			            for (int n = 0; n < centralStar.getOrbitalObjects().size(); n++) {
 				            Tab orbit = new Tab();
 				            
 
-				            String text2 = ((Star) testSystem.get(i).get(0)).getOrbitalObjects().get(n).getName();
+				            String orbitingStarName = centralStar.getOrbitalObjects().get(n).getName();
+				            OrbitalObjects orbitingStar = centralStar.getOrbitalObjects().get(n);
 				            
-				            orbit.setText(text2);
+				            orbit.setText(orbitingStarName);
 				            VBox orbitbox = new VBox();
 				            //orbitbox.getChildren().add(new Label(text2));
 				            
@@ -84,11 +84,11 @@ public class Main extends Application {
 				            moonTabs.prefWidthProperty().bind(scene.widthProperty());
 				            for (int j = 0; j < 1; j++) {
 				            	Tab moon = new Tab();
-				            	String text3 = ((Star) testSystem.get(i).get(0)).getOrbitalObjects().get(0).getName();
-				            	String objectName = ((Star) testSystem.get(i).get(0)).getOrbitalObjects().get(n).getName();
+				            	
+				            	String objectName = centralStar.getOrbitalObjects().get(n).getName();
 					            moon.setText(objectName);
 					            VBox moonbox = new VBox();
-					            moonbox.getChildren().add(new Label(text3));
+					            moonbox.getChildren().add(new Label(objectName));
 					            moon.setContent(moonbox);
 					            moonTabs.getTabs().add(moon);
 				            }
