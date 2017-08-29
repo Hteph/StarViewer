@@ -42,14 +42,15 @@ import javafx.util.Duration;
 public final class Pagemaker {
 
 	private Pagemaker(){
-		//No instances of thic class please!
+		//No instances of this class please!
 
 	}
 
 	//Methods------------------------------------------------
 	public static VBox generator(StellarObject target) {
 		VBox page =new VBox();
-		if(target instanceof Star) StarPageGenerator((Star) target);
+		if(target instanceof Star) page = StarPageGenerator((Star) target);
+
 		return page;
 	}
 
@@ -58,7 +59,6 @@ public final class Pagemaker {
 	private static VBox StarPageGenerator(Star star) {
 
 		VBox infoPage = new VBox();
-
 
 		Text titelInfo = new Text(star.getName() + " ("+star.getClassification() + ")" );
 
@@ -138,22 +138,22 @@ public final class Pagemaker {
 		TitledPane secondTitledPane = new TitledPane();
 		secondTitledPane.setText("System Objects");
 
-		TableView<OrbitalObjects> table = new TableView<OrbitalObjects>();
-		ObservableList<OrbitalObjects> systemOrbitsObjects = FXCollections.observableArrayList();
+		TableView<StellarObject> table = new TableView<StellarObject>();
+		ObservableList<StellarObject> systemOrbitsObjects = FXCollections.observableArrayList();
 
 		for(int i=0; i<star.getOrbitalObjects().size();i++){
 			systemOrbitsObjects.add(star.getOrbitalObjects().get(i));
 		}
 		table.itemsProperty().set(systemOrbitsObjects);
-		TableColumn<OrbitalObjects, Double> orbit = new TableColumn<>("Orbit Distance [Au]");
-		TableColumn<OrbitalObjects, String> name = new TableColumn<>("Object Name");
-		TableColumn<OrbitalObjects, String> type = new TableColumn<>("Object Type");
-		TableColumn<OrbitalObjects, String> life = new TableColumn<>("Native Life");
+		TableColumn<StellarObject, Double> orbit = new TableColumn<>("Orbit Distance [Au]");
+		TableColumn<StellarObject, String> name = new TableColumn<>("Object Name");
+		TableColumn<StellarObject, String> type = new TableColumn<>("Object Type");
+		TableColumn<StellarObject, String> life = new TableColumn<>("Native Life");
 
-		orbit.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, Double>("orbitDistance"));
-		name.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("name"));
-		type.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("classificationName"));
-		life.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("lifeType"));
+		orbit.setCellValueFactory(new PropertyValueFactory<StellarObject, Double>("orbitDistance"));
+		name.setCellValueFactory(new PropertyValueFactory<StellarObject, String>("name"));
+		type.setCellValueFactory(new PropertyValueFactory<StellarObject, String>("classificationName"));
+		life.setCellValueFactory(new PropertyValueFactory<StellarObject, String>("lifeType"));
 
 		table.getColumns().addAll(orbit, name, type, life);
 

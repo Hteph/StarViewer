@@ -10,7 +10,7 @@ public class Star extends StellarObject {
 	private double radius;
 	private String classification;
 	private double age;
-	private ArrayList<OrbitalObjects> orbitalObjects = new ArrayList<>();
+	private ArrayList<StellarObject> orbitalObjects = new ArrayList<>();
 	private int abundance;
 	private double mass;
 	
@@ -26,7 +26,7 @@ public class Star extends StellarObject {
 		this.age = numberUtilities.nicefyDouble(age);
 		this.abundance = abundance;
 		this.mass = numberUtilities.nicefyDouble(mass);
-		
+		orbitalObjects.add(this);
 	}
 	
 	
@@ -52,7 +52,7 @@ public class Star extends StellarObject {
 		return abundance;
 	}
 	
-	public ArrayList<OrbitalObjects> getOrbitalObjects() {
+	public ArrayList<StellarObject> getOrbitalObjects() {
 		return orbitalObjects;
 	}
 

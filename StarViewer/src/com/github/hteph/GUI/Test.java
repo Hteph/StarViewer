@@ -6,6 +6,7 @@ import com.github.hteph.Generators.StarGenerator;
 import com.github.hteph.Generators.StarSystemGenerator;
 import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
+import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -134,22 +135,22 @@ public class Test extends Application{
 		VBox systemsObjects = new VBox();
 
 
-		TableView<OrbitalObjects> table = new TableView<OrbitalObjects>();
-		ObservableList<OrbitalObjects> systemOrbitsObjects = FXCollections.observableArrayList();
+		TableView<StellarObject> table = new TableView<StellarObject>();
+		ObservableList<StellarObject> systemOrbitsObjects = FXCollections.observableArrayList();
 		
 		for(int i=0; i<star.getOrbitalObjects().size();i++){
 			systemOrbitsObjects.add(star.getOrbitalObjects().get(i));
 		}
 		table.itemsProperty().set(systemOrbitsObjects);
-		TableColumn<OrbitalObjects, Double> orbit = new TableColumn<>("Orbit Distance [Au]");
-		TableColumn<OrbitalObjects, String> name = new TableColumn<>("Object Name");
-		TableColumn<OrbitalObjects, String> type = new TableColumn<>("Object Type");
-		TableColumn<OrbitalObjects, String> life = new TableColumn<>("Native Life");
+		TableColumn<StellarObject, Double> orbit = new TableColumn<>("Orbit Distance [Au]");
+		TableColumn<StellarObject, String> name = new TableColumn<>("Object Name");
+		TableColumn<StellarObject, String> type = new TableColumn<>("Object Type");
+		TableColumn<StellarObject, String> life = new TableColumn<>("Native Life");
 		
-		orbit.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, Double>("orbitDistance"));
-		name.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("name"));
-		type.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("classificationName"));
-		life.setCellValueFactory(new PropertyValueFactory<OrbitalObjects, String>("lifeType"));
+		orbit.setCellValueFactory(new PropertyValueFactory<StellarObject, Double>("orbitDistance"));
+		name.setCellValueFactory(new PropertyValueFactory<StellarObject, String>("name"));
+		type.setCellValueFactory(new PropertyValueFactory<StellarObject, String>("classificationName"));
+		life.setCellValueFactory(new PropertyValueFactory<StellarObject, String>("lifeType"));
 		
 		table.getColumns().addAll(orbit, name, type, life);
 		

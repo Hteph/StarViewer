@@ -70,10 +70,10 @@ public class Main extends Application {
 				            Tab orbit = new Tab();
 				            
 
-				            String orbitingStarName = centralStar.getOrbitalObjects().get(n).getName();
-				            OrbitalObjects orbitingStar = centralStar.getOrbitalObjects().get(n);
+				           // String orbitingStarName = centralStar.getOrbitalObjects().get(n).getName();
+				            StellarObject thingOrbitingStar = centralStar.getOrbitalObjects().get(n);
 				            
-				            orbit.setText(orbitingStarName);
+				            orbit.setText(thingOrbitingStar.getName());
 				            VBox orbitbox = new VBox();
 				            //orbitbox.getChildren().add(new Label(text2));
 				            
@@ -82,6 +82,7 @@ public class Main extends Application {
 				            moonTabs.setSide(Side.BOTTOM);
 				            moonTabs.prefHeightProperty().bind(scene.heightProperty());
 				            moonTabs.prefWidthProperty().bind(scene.widthProperty());
+				            
 				            for (int j = 0; j < 1; j++) {
 				            	Tab moon = new Tab();
 				            	
@@ -89,6 +90,7 @@ public class Main extends Application {
 					            moon.setText(objectName);
 					            VBox moonbox = new VBox();
 					            moonbox.getChildren().add(new Label(objectName));
+					            moonbox.getChildren().add(Pagemaker.generator(thingOrbitingStar));					            				            
 					            moon.setContent(moonbox);
 					            moonTabs.getTabs().add(moon);
 				            }
