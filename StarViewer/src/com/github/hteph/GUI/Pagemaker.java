@@ -5,6 +5,7 @@ import java.awt.Label;
 import com.github.hteph.Generators.StarGenerator;
 import com.github.hteph.Generators.StarSystemGenerator;
 import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
+import com.github.hteph.ObjectsOfAllSorts.Planet;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 
@@ -50,11 +51,62 @@ public final class Pagemaker {
 	public static VBox generator(StellarObject target) {
 		VBox page =new VBox();
 		if(target instanceof Star) page = StarPageGenerator((Star) target);
-
+		if(target instanceof Planet) page = PlanetPageGenerator((Planet) target);
 		return page;
 	}
+	
+//Inner Methods -----------------------------------------------
+	
+	private static VBox PlanetPageGenerator(Planet planet) {
+		
+		VBox infoPage = new VBox();
 
-	//Inner Methods -----------------------------------------------
+		Text titelInfo = new Text(planet.getName() + " ("+planet.getClassificationName() + ")" );
+		
+		titelInfo.setFont(Font.font ("Verdana", 20));
+		HBox topBox = new HBox();
+		topBox.setAlignment(Pos.CENTER);
+		topBox.getChildren().add(titelInfo);
+		topBox.setPadding(new Insets(15, 12, 15, 12));
+
+		infoPage.getChildren().add(topBox);
+		
+		TextArea description = new TextArea(planet.getDescription());
+		description.setPrefColumnCount(60);
+		description.setWrapText(true);
+		
+		Sphere planetSphere = new Sphere(100);
+		planetSphere.setTranslateX(200); 
+		planetSphere.setTranslateY(150);
+
+		final PhongMaterial planetColour = new PhongMaterial();
+
+		findStarColour(planet, planetColour);
+		
+		planetSphere.setMaterial(planetColour);
+
+		Image normalMap = new Image("/normalmap.png");
+
+		planetColour.setBumpMap(normalMap);
+
+		Color ambiColor = new Color(1.0, 1.0, 1.0, 0.1);
+
+		AmbientLight light = new AmbientLight();
+		light.setColor(ambiColor);
+
+		PointLight light2 = new PointLight();
+		light2.setColor(Color.WHITE);
+		
+		
+		return null;
+	}
+
+	
+
+	private static void findStarColour(Planet planet, PhongMaterial planetColour) {
+		planetColour.setDiffuseColor(Color.BROWN);
+	
+}
 
 	private static VBox StarPageGenerator(Star star) {
 
