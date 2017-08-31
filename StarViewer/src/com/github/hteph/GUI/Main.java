@@ -86,7 +86,8 @@ public class Main extends Application {
 				            for (int j = 0; j < 1; j++) {
 				            	Tab moon = new Tab();
 				            	
-				            	String objectName = centralStar.getOrbitalObjects().get(n).getName();
+				            	String objectName = thingOrbitingStar.getName();
+
 					            moon.setText(objectName);
 					            VBox moonbox = new VBox();
 					            moonbox.getChildren().add(new Label(objectName));

@@ -31,7 +31,7 @@ public final class GenerateAsteroidBelt {
 		if(orbitalDistancesArray[orbitNumber]>snowLine) outerZone=true;
 
 
-//Eccentricity 
+		//Eccentricity 
 
 		eccentricity=(Dice.d6()-1)*(Dice.d6()-1)/(100*Dice.d6());					
 		belt.setEccentricity(eccentricity);
@@ -76,20 +76,20 @@ public final class GenerateAsteroidBelt {
 		double beltWitdth=0;
 
 		if(orbitNumber>0) beltWitdth = orbitalDistancesArray[orbitNumber]-orbitalDistancesArray[orbitNumber-1];
-		else  
-			beltWitdth = orbitalDistancesArray[orbitNumber]/2;
+		else  beltWitdth = orbitalDistancesArray[orbitNumber]/2;
+			
 
-			if(orbitNumber>0 && orbitalObjectBasicList[orbitNumber-1]=='j' || orbitalObjectBasicList[orbitNumber-1]=='j') beltWitdth /=2;
-			if(orbitalObjectBasicList[orbitNumber+1]=='J' || orbitalObjectBasicList[orbitNumber+1]=='J') beltWitdth /=2;
+		if(orbitNumber>0) if( orbitalObjectBasicList[orbitNumber-1]=='j' || orbitalObjectBasicList[orbitNumber-1]=='j') beltWitdth /=2;
+		else if(orbitalObjectBasicList[orbitNumber+1]=='J' || orbitalObjectBasicList[orbitNumber+1]=='J') beltWitdth /=2;
 
-		
+
 		belt.setAsteroidBeltWidht(beltWitdth);
 
-// and here we return the result	
+		// and here we return the result	
 
 		return belt;
 	}
-// Inner methods -------------------------------------------------------------------------------------------------	
+	// Inner methods -------------------------------------------------------------------------------------------------	
 
 
 

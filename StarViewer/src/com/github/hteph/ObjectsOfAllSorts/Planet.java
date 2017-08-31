@@ -2,6 +2,8 @@ package com.github.hteph.ObjectsOfAllSorts;
 
 import java.util.ArrayList;
 
+import com.github.hteph.Utilities.numberUtilities;
+
 public class Planet extends OrbitalObjects {
 
 	
@@ -76,7 +78,7 @@ public class Planet extends OrbitalObjects {
 	}
 
 	public void setGravity(double gravity) {
-		this.gravity = gravity;
+		this.gravity = numberUtilities.nicefyDouble(gravity);
 	}
 
 	public double getDensity() {
@@ -84,7 +86,7 @@ public class Planet extends OrbitalObjects {
 	}
 
 	public void setDensity(double density) {
-		this.density = density;
+		this.density = numberUtilities.nicefyDouble(density);
 	}
 
 	public double getOrbitalPeriod() {
@@ -92,7 +94,7 @@ public class Planet extends OrbitalObjects {
 	}
 
 	public void setOrbitalPeriod(double orbitalPeriod) {
-		this.orbitalPeriod = orbitalPeriod;
+		this.orbitalPeriod = numberUtilities.nicefyDouble(orbitalPeriod);
 	}
 
 	public double getAxialTilt() {
@@ -124,7 +126,7 @@ public class Planet extends OrbitalObjects {
 	}
 
 	public void setRotationalPeriod(double rotationalPeriod) {
-		this.rotationalPeriod = rotationalPeriod;
+		this.rotationalPeriod = numberUtilities.nicefyDouble(rotationalPeriod);
 	}
 
 	public String getTectonicCore() {
@@ -161,6 +163,17 @@ public class Planet extends OrbitalObjects {
 
 	public ArrayList<AmosphericGases> getAtmoshericComposition() {
 		return atmoshericComposition;
+	}
+	
+	public String getAtmoshericCompositionParsed() {
+		String listOfGas=" ";
+		
+		for(AmosphericGases next: atmoshericComposition) {
+			
+			listOfGas+=" "+next.toString();
+		}
+		
+		return listOfGas;
 	}
 
 	public void setAtmoshericComposition(ArrayList<AmosphericGases> atmoshericComposition) {

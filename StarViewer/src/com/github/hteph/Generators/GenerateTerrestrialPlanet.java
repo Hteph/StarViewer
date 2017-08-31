@@ -15,6 +15,7 @@ import com.github.hteph.ObjectsOfAllSorts.Planet;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.Dice;
+import com.github.hteph.Utilities.numberUtilities;
 
 public final class GenerateTerrestrialPlanet {
 
@@ -56,7 +57,7 @@ public final class GenerateTerrestrialPlanet {
 		boolean hasGaia;
 		String lifeType;
 		
-		System.out.println("Orbit="+orbitDistance);
+		
 
 		Planet planet = new Planet (name, description, classificationName, orbitDistance, orbitingAround);
 
@@ -80,9 +81,10 @@ public final class GenerateTerrestrialPlanet {
 		}else{
 			density = 0.3+(Dice.d6()+Dice.d6()-2)*0.05;
 		}
-		mass =Math.pow(radius/6380,3)*density;
-		gravity = mass/Math.pow((radius/6380),2);
+		mass =Math.pow(radius/6380.0,3)*density;
+		gravity = mass/Math.pow((radius/6380.0),2);
 		orbitalPeriod = Math.pow(Math.pow(orbitDistance,3)/orbitingAround.getMass(),0.5); //in earth years
+
 
 		planet.setMass(mass);
 		planet.setDensity(density);
@@ -309,7 +311,7 @@ public final class GenerateTerrestrialPlanet {
 		else if (atmoModeration.equals("Extreme")) index = 3;
 
 		for(int i=0;i<10;i++){
-			latitudeTemperature[i] = temperatureRangeBand[index][i]*surfaceTemp;
+			latitudeTemperature[i] = (int)(temperatureRangeBand[index][i]*surfaceTemp);
 		}
 
 		for(int i=0;i<10;i++){
@@ -324,18 +326,14 @@ public final class GenerateTerrestrialPlanet {
 			if(orbitalPeriod<0.25 && !atmoModeration.equals("Low"))	seasonEffect *= 0.75;
 			if(orbitalPeriod>3 && !atmoModeration.equals("High") && axialTilt>40)	seasonEffect *= 1.5;
 
-			summerTemperature[i]=(latitudeTemperature[summer]-latitudeTemperature[i])*seasonEffect;
-			winterTemperature[i]=(latitudeTemperature[winter]-latitudeTemperature[i])*seasonEffect;
+			summerTemperature[i]=(int)(latitudeTemperature[summer]-latitudeTemperature[i])*seasonEffect;
+			winterTemperature[i]=(int)(latitudeTemperature[winter]-latitudeTemperature[i])*seasonEffect;
 		}
-
-
 
 		planet.setRangeBandTemperature(latitudeTemperature);
 		planet.setRangeBandTempSummer(summerTemperature);
 		planet.setRangeBandTempWinter(winterTemperature);
-
 		
-
 	}
 	/*TODO
 	 * This should be reworked (in conjuction with atmo) to remove CL and F from naturally occuring and instead
