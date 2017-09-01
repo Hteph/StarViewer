@@ -1,5 +1,6 @@
 package com.github.hteph.GUI;
 	
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.github.hteph.Generators.StarGenerator;
@@ -27,7 +28,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		
-		StellarObject star = StarGenerator.Generator();
+		StellarObject star = null;
+		try {
+			star = StarGenerator.Generator();
+		} catch (IOException e1) {
+			System.out.println("oh NO!");
+		}
 		ArrayList<StellarObject> systemList = StarSystemGenerator.Generator((Star) star);
 		ArrayList<ArrayList> testSystem = new ArrayList<>();
 		

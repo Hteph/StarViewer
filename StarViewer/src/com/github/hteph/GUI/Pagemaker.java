@@ -83,7 +83,7 @@ public final class Pagemaker {
 		planetSphere.setTranslateX(200); 
 		planetSphere.setTranslateY(150);
 
-		final PhongMaterial jovianColour = new PhongMaterial();
+
 
 		Color ambiColor = new Color(1.0, 1.0, 1.0, 0.5);
 

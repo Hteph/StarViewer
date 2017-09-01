@@ -140,9 +140,9 @@ public final class GenerateTerrestrialPlanet {
 			magneticField =10 * 1/( Math.sqrt(( rotationalPeriod / 24.0 ))) * Math.pow(density, 2) * Math.sqrt(mass) / orbitingAround.getAge();
 			if(tectonicCore.contains("small")) magneticField *=0.5;
 			if(tectonicCore.contains("medium")) magneticField *=0.75;
-			if(tectonicActivityGroup.equals("Dead")) magneticField = Dice.d6()/10.0;
+			if(tectonicActivityGroup.equals("Dead")) magneticField = Dice.d6()/15.0;
 		}else{
-			magneticField = Dice.d6()/10.0;
+			magneticField = Dice.d6()/20.0;
 		}
 
 		planet.setMagneticField(magneticField);
