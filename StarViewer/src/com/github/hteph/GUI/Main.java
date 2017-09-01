@@ -9,10 +9,12 @@ import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.PrintThisPage;
+import com.github.hteph.Utilities.saveThisLocally;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.stage.Stage;
@@ -32,18 +34,22 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
+
+		ArrayList<ArrayList> oldSystems = new ArrayList<>();
+		
+		oldSystems = saveThisLocally.restoreSaved();
+		
 		StellarObject star = null;
 		try {
 			star = StarGenerator.Generator();
 		} catch (IOException e1) {
-			System.out.println("oh NO!");
+			System.out.println("oh NO! Name Error");
 		}
 		ArrayList<StellarObject> systemList = StarSystemGenerator.Generator((Star) star);
-		ArrayList<ArrayList> testSystem = new ArrayList<>();
+		
+		oldSystems.add(systemList);
 
-		testSystem.add(systemList);
-
-
+		final ArrayList<ArrayList> newSystems = oldSystems;
 
 		try {
 			Group root = new Group();
@@ -57,11 +63,11 @@ public class Main extends Application {
 			tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 			borderPane.setCenter(tabPane);
 			
-			for (int i = 0; i < testSystem.size(); i++) {
+			for (int i = 0; i < newSystems.size(); i++) {
 				Tab tab = new Tab();
 
-				String starSystemName = testSystem.get(i).get(0).toString();
-				Star centralStar = (Star) testSystem.get(i).get(0);
+				String starSystemName = newSystems.get(i).get(0).toString();
+				Star centralStar = (Star) newSystems.get(i).get(0);
 
 				tab.setText(starSystemName);          
 				VBox starBox = new VBox();
@@ -102,9 +108,12 @@ public class Main extends Application {
 						moonbox.getChildren().add(new Label(objectName));
 						moonbox.getChildren().add(Pagemaker.generator(thingOrbitingStar));
 						
-						
+						//Utility box
 						
 						HBox utility = new HBox();
+						utility.setAlignment(Pos.BOTTOM_CENTER);
+						utility.setPadding(new Insets(15, 12, 15, 12));
+						//Utskrift
 						Button printButton = new Button("Print");
 						utility.getChildren().add(printButton);
 						printButton.setOnAction(new EventHandler <ActionEvent>() {
@@ -113,6 +122,16 @@ public class Main extends Application {
 							}
 
 						});
+						//Save
+						Button saveButton = new Button("Save");
+						utility.getChildren().add(saveButton);
+						saveButton.setOnAction(new EventHandler <ActionEvent>() {
+							public void handle(ActionEvent event) {
+								saveThisLocally.saveThis(newSystems);
+							}
+
+						});
+						
 						moonbox.getChildren().add(utility);
 						moon.setContent(moonbox);
 						moonTabs.getTabs().add(moon);

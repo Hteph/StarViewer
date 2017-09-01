@@ -1,8 +1,14 @@
 package com.github.hteph.ObjectsOfAllSorts;
 
-public class AmosphericGases {
+import java.io.Serializable;
 
+public class AmosphericGases implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private int percentageInAtmo;
 
