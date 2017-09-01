@@ -1,6 +1,13 @@
 package com.github.hteph.ObjectsOfAllSorts;
 
-public abstract class StellarObject {
+import java.io.Serializable;
+
+public abstract class StellarObject implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	protected String name;
 	protected String description;
