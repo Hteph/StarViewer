@@ -53,7 +53,7 @@ public final class GenerateTerrestrialPlanet {
 		boolean InnerZone = false;
 		String tectonicActivityGroup;
 		double orbitalInclination;
-		boolean boilingAtmo =false;
+
 		boolean hasGaia;
 		String lifeType;
 		
@@ -137,11 +137,12 @@ public final class GenerateTerrestrialPlanet {
 
 //Magnetic field
 		if(tectonicCore.contains("metal")){
-			magneticField =10 * 1/( Math.sqrt(( rotationalPeriod / 24 ))) * Math.pow(density, 2) * Math.sqrt(mass) / orbitingAround.getAge();
+			magneticField =10 * 1/( Math.sqrt(( rotationalPeriod / 24.0 ))) * Math.pow(density, 2) * Math.sqrt(mass) / orbitingAround.getAge();
 			if(tectonicCore.contains("small")) magneticField *=0.5;
 			if(tectonicCore.contains("medium")) magneticField *=0.75;
+			if(tectonicActivityGroup.equals("Dead")) magneticField = Dice.d6()/10.0;
 		}else{
-			magneticField = Dice.d6()/10;
+			magneticField = Dice.d6()/10.0;
 		}
 
 		planet.setMagneticField(magneticField);
@@ -149,7 +150,7 @@ public final class GenerateTerrestrialPlanet {
 //Temperature
 		baseTemperature = (int) (255/Math.sqrt((orbitDistance/Math.sqrt(orbitingAround.getLumosity()))));
 
-		//base temp is an value of little use beyond this genertor and is not propagatet to the planet object
+		//base temp is an value of little use beyond this generator and is not propagate to the planet object
 
 //Hydrosphere
 		hydrosphereDescription = findHydrosphereDescription(InnerZone, baseTemperature);
@@ -164,19 +165,29 @@ public final class GenerateTerrestrialPlanet {
 		planet.setHydrosphere(hydrosphere);
 
 //Atmoshperic details
-		atmoshericComposition = makeAtmoshpere(orbitingAround, baseTemperature, tectonicActivityGroup, radius, gravity, boilingAtmo);
-		atmoPressure = findAtmoPressure(tectonicActivityGroup, hydrosphere, boilingAtmo, mass, atmoshericComposition);
+		
+		atmoshericComposition = makeAtmoshpere(orbitingAround, baseTemperature, tectonicActivityGroup, radius, gravity, planet);
+		atmoPressure = findAtmoPressure(tectonicActivityGroup, hydrosphere, planet.isBoilingAtmo(), mass, atmoshericComposition);
 
 		// TODO Special considerations for c objects, this should be expanded upon when these gets more details
+		
 		if (orbitalObjectClass=='c') {
 			if(Dice.d6()<6) atmoPressure=0;
 			else atmoPressure =0.001;
-		}
-		
-		if (atmoPressure==0) atmoshericComposition.clear();
+		}		
 
 		double nicePressure = ((int)(atmoPressure*1000))/1000.0;
+		
 		if(nicePressure==0 && atmoPressure>0) nicePressure=0.001;
+		
+		if (nicePressure==0) atmoshericComposition.clear();
+		if (atmoshericComposition.size()==0) { //There are edge cases where all of atmo has boiled away
+			nicePressure = 0;
+			planet.setHydrosphereDescription("Remnants");
+			planet.setHydrosphere(0);
+		}
+		
+		
 		
 		planet.setAtmoPressure(nicePressure);
 
@@ -291,6 +302,7 @@ public final class GenerateTerrestrialPlanet {
 		double[] summerTemperature = new double[10];
 		double[] winterTemperature = new double[10];
 		double[] latitudeTemperature = new double[10];
+		double[] baseTemperature = new double[10];
 		int index = 0;
 		int testModeration=0;						
 
@@ -313,10 +325,19 @@ public final class GenerateTerrestrialPlanet {
 		for(int i=0;i<10;i++){
 			latitudeTemperature[i] = (int)(temperatureRangeBand[index][i]*surfaceTemp);
 		}
+		
+		for(int i=0;i<10;i++){
+			baseTemperature[i] = latitudeTemperature[i]-274;
+		}
 
 		for(int i=0;i<10;i++){
 
 			double seasonEffect = 1;
+			// This part is supposed to shift the rangebands for summer /winter effects, it makes an
+			// to me unproven assumption that winter temperatures at the poles is not changed by seasonal effects
+			// this feels odd but I have to delve further into the science before I dismiss it.
+			// the effect occurs from interscetion of axial tilt effects and rangeband effects in a way that
+			//makes me suspect it is unintentional.
 			int axialTiltEffect = (int) (axialTilt/10);
 			int summer = Math.max(0, i-axialTiltEffect);
 			int winter =Math.min(9, i+axialTiltEffect);
@@ -328,9 +349,10 @@ public final class GenerateTerrestrialPlanet {
 
 			summerTemperature[i]=(int)(latitudeTemperature[summer]-latitudeTemperature[i])*seasonEffect;
 			winterTemperature[i]=(int)(latitudeTemperature[winter]-latitudeTemperature[i])*seasonEffect;
+			
 		}
 
-		planet.setRangeBandTemperature(latitudeTemperature);
+		planet.setRangeBandTemperature(baseTemperature);
 		planet.setRangeBandTempSummer(summerTemperature);
 		planet.setRangeBandTempWinter(winterTemperature);
 		
@@ -479,7 +501,7 @@ public final class GenerateTerrestrialPlanet {
 		return pressure;
 	}
 
-	private static ArrayList<AmosphericGases> makeAtmoshpere(Star star, int baseTemperature, String tectonicActivityGroup, double radius, double gravity, boolean boilingAtmo) {
+	private static ArrayList<AmosphericGases> makeAtmoshpere(Star star, int baseTemperature, String tectonicActivityGroup, double radius, double gravity, Planet planet) {
 
 		Set<String> makeAtmoshpere =new TreeSet<String>();
 		ArrayList<AmosphericGases> atmoArray = new ArrayList<AmosphericGases>();
@@ -680,7 +702,9 @@ public final class GenerateTerrestrialPlanet {
 		}
 
 		double retainedGases = 0.02783 * baseTemperature / Math.pow(Math.pow((19600 * gravity * radius),0.5) /11200, 2);
-
+		
+		boolean boilingAtmo=false;
+		
 		if(retainedGases>2) boilingAtmo=makeAtmoshpere.remove("H2");
 		if(retainedGases>4) boilingAtmo=makeAtmoshpere.remove("He");
 		if(retainedGases>16) boilingAtmo=makeAtmoshpere.remove("CH4");
@@ -698,6 +722,8 @@ public final class GenerateTerrestrialPlanet {
 		if(retainedGases>62) boilingAtmo=makeAtmoshpere.remove("SO2");
 		if(retainedGases>70) boilingAtmo=makeAtmoshpere.remove("Cl2");
 		if(retainedGases>98) boilingAtmo=makeAtmoshpere.remove("H2SO4");
+		
+		planet.setBoilingAtmo(boilingAtmo);
 
 		if((star.getClassification().contains("A") || star.getClassification().contains("B")) && baseTemperature>150) {
 			makeAtmoshpere.remove("H2O");

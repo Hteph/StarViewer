@@ -2,6 +2,8 @@ package com.github.hteph.ObjectsOfAllSorts;
 
 import java.util.ArrayList;
 
+import com.github.hteph.Utilities.numberUtilities;
+
 public class Jovian extends OrbitalObjects {
 	
 
@@ -64,7 +66,7 @@ public class Jovian extends OrbitalObjects {
 	}
 
 	public void setOrbitalPeriod(double orbitalPeriod) {
-		this.orbitalPeriod = orbitalPeriod;
+		this.orbitalPeriod = numberUtilities.nicefyDouble(orbitalPeriod);
 	}
 
 	public double getAxialTilt() {
@@ -96,7 +98,7 @@ public class Jovian extends OrbitalObjects {
 	}
 
 	public void setMagneticField(double magneticField) {
-		this.magneticField = magneticField;
+		this.magneticField = numberUtilities.nicefyDouble( magneticField);
 	}
 
 	public int getBaseTemperature() {

@@ -32,8 +32,16 @@ public class Planet extends OrbitalObjects {
 	private double dayTempMod;
 	private String tectonicActivityGroup;
 	private double orbitalInclination;
-
+	private boolean boilingAtmo;
 	
+	public boolean isBoilingAtmo() {
+		return boilingAtmo;
+	}
+
+	public void setBoilingAtmo(boolean boilingAtmo) {
+		this.boilingAtmo = boilingAtmo;
+	}
+
 	private String classificationName;
 	private String lifeType;
 
@@ -142,7 +150,7 @@ public class Planet extends OrbitalObjects {
 	}
 
 	public void setMagneticField(double magneticField) {
-		this.magneticField = magneticField;
+		this.magneticField = numberUtilities.nicefyDouble(magneticField);
 	}
 
 	public String getHydrosphereDescription() {
