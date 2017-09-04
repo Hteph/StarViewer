@@ -1,6 +1,7 @@
 package com.github.hteph.Generators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.Dice;
 import com.github.hteph.Utilities.numberUtilities;
+import com.sun.corba.se.impl.orbutil.RepositoryIdUtility;
 
 public final class GenerateTerrestrialPlanet {
 
@@ -25,7 +27,7 @@ public final class GenerateTerrestrialPlanet {
 	}
 
 
-	public static OrbitalObjects Generator(String name, String description, String classificationName, double orbitDistance, char orbitalObjectClass, Star orbitingAround) {
+	public static OrbitalObjects Generator(String name, String description, String classificationName, double orbitDistance, char orbitalObjectClass, StellarObject centralObject) {
 		
 		
 		double mass;
@@ -53,10 +55,21 @@ public final class GenerateTerrestrialPlanet {
 		boolean InnerZone = false;
 		String tectonicActivityGroup;
 		double orbitalInclination;
-
+		Planet moonsPlanet;
+		double moonOrbit; //in planetary radii
 		boolean hasGaia;
 		String lifeType;
+		Star orbitingAround;
 		
+		
+		//Ugly hack to be able to reuse this method for generating moons
+		if(orbitalObjectClass =='m') {
+			moonsPlanet = (Planet) centralObject;
+			moonOrbit = orbitDistance;
+			orbitingAround = (Star) moonsPlanet.getOrbitingAround();
+			name +="(moon)"; //TODO a better naming scheme a,b,c added depending on position in orbits
+			orbitDistance = moonsPlanet.getOrbitDistance();
+		}else orbitingAround = (Star) centralObject;
 		
 
 		Planet planet = new Planet (name, description, classificationName, orbitDistance, orbitingAround);
@@ -66,9 +79,35 @@ public final class GenerateTerrestrialPlanet {
 
 
 // size may not be all, but here it is set
+		//TODO add greater varity for moon objects, depending on planet
 
 		int a=900;
-		if(orbitalObjectClass=='t' || orbitalObjectClass=='m' || orbitalObjectClass=='c') a=90;
+		if(orbitalObjectClass =='m') {
+			switch (Dice.d10()) {
+			case 1:
+				
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				
+				break;
+			case 4:
+				
+				break;
+			case 5:
+				
+				break;
+			case 6:
+				
+				break;
+
+			default:
+				break;
+			}
+		}
+		if(orbitalObjectClass=='t' ||  orbitalObjectClass=='c') a=90;
 		radius = (Dice._2d6())*a;
 
 		planet.setRadius((int)radius);
@@ -102,7 +141,7 @@ public final class GenerateTerrestrialPlanet {
 		
 		orbitalInclination = eccentryMod*(Dice.d6()+Dice.d6())/(1+mass/10);	
 
-		planet.setEccentricity(eccentricity);
+		
 		planet.setAxialTilt(axialTilt);
 		planet.setOrbitalInclination(orbitalInclination);
 
@@ -118,8 +157,30 @@ public final class GenerateTerrestrialPlanet {
 		}else{
 			rotationalPeriod = (Dice.d6()+Dice.d6()+8)*(1+0.1*(tidalForce*orbitingAround.getAge()-Math.pow(mass, 0.5)));
 			if(Dice.d6()<2) rotationalPeriod=Math.pow(rotationalPeriod,Dice.d6());
+			
+			if(rotationalPeriod>orbitalPeriod/2.0) {
+				
+				double[] resonanceArray = {0.5,2/3.0,1,1.5,2,2.5,3,3.5};
+				double[] eccentricityEffect = {0.1,0.15,0.21,0.39,0.57,0.72,0.87};
+				
+				int resultResonance = Arrays.binarySearch(resonanceArray, rotationalPeriod/orbitalPeriod);
+				
+				if(resultResonance<0) {
+					eccentricity=eccentricityEffect[-resultResonance-2];
+					rotationalPeriod = resonanceArray[-resultResonance-2];
+				}else {
+					resultResonance = (int) Math.min(resultResonance, 6); // Edge case of greater than 0.87 relation
+					eccentricity=eccentricityEffect[resultResonance];
+					rotationalPeriod = resonanceArray[-resultResonance];
+				}
+				
+				
+			}
+			
 		}
+		
 
+		planet.setEccentricity(eccentricity);
 		planet.setRotationalPeriod(rotationalPeriod);
 
 //TODO tectonics should include moons!
@@ -171,7 +232,7 @@ public final class GenerateTerrestrialPlanet {
 
 		// TODO Special considerations for c objects, this should be expanded upon when these gets more details
 		
-		if (orbitalObjectClass=='c') {
+		if (orbitalObjectClass=='c') { //These should never had a chance to get an "real" atmosphere in the first place but may have some traces
 			if(Dice.d6()<6) atmoPressure=0;
 			else atmoPressure =0.001;
 		}		
@@ -186,8 +247,6 @@ public final class GenerateTerrestrialPlanet {
 			planet.setHydrosphereDescription("Remnants");
 			planet.setHydrosphere(0);
 		}
-		
-		
 		
 		planet.setAtmoPressure(nicePressure);
 
@@ -205,8 +264,8 @@ public final class GenerateTerrestrialPlanet {
 		greenhouseFactor =  1 + Math.sqrt(atmoPressure) *0.01 * (Dice.d6()+Dice.d6()-1) + Math.sqrt(greenhouseGasEffect) * 0.1 + waterVaporFactor * 0.1;
 
 		//TODO Here adding some Gaia moderation factor (needs tweaking probably) moving a bit more towards water/carbon ideal
-		if (lifeType.equals("Oxygen Breathing") && baseTemperature>350) greenhouseFactor *=0.9;
-		if (lifeType.equals("Oxygen Breathing") && baseTemperature<250) greenhouseFactor *=1.1;
+		if (lifeType.equals("Oxygen Breathing") && baseTemperature>350) greenhouseFactor *=0.8;
+		if (lifeType.equals("Oxygen Breathing") && baseTemperature<250) greenhouseFactor *=1.2;
 
 		// My take on the effect of greenhouse and albedo on temperature max planerary temp is 1000 and the half point is 400
 
@@ -385,6 +444,7 @@ public final class GenerateTerrestrialPlanet {
 			lifeIndex +=1;
 		}
 
+		// This needs to be rethougth, remove Cl and F2 from occuring gases and instead add them similar to Oxygen
 		if(atmoshericComposition.contains("NH3") && Dice.d6()<3) lifeIndex +=1;
 		if(atmoshericComposition.contains("CL2")&& Dice.d6()<3) lifeIndex +=3;
 		if(atmoshericComposition.contains("F2")&& Dice.d6()<3) lifeIndex +=3;
@@ -470,33 +530,39 @@ public final class GenerateTerrestrialPlanet {
 		if(hydrosphere>0) mod +=1;
 		if(boilingAtmo) mod -=1;
 
-		switch (Dice.d6()+Dice.d6()+mod) {
+		switch (Dice._2d6()+mod) {
 		case 2:
-			pressure = (Dice.d6()+Dice.d6())*0.05;
+			pressure = (Dice._2d6())*0.005;
 			break;
-		case 3:case 4:
-			pressure = (Dice.d6()+Dice.d6())*0.1;
+		case 3:
+			pressure = (Dice._2d6())*0.01;
 			break;
-		case 5:case 6:case 7:
-			pressure = (Dice.d6()+Dice.d6())*0.2;
+		case 4:case 5:
+			pressure = (Dice._2d6())*0.05;
 			break;
-		case 8:case 9:
-			pressure = (Dice.d6()+Dice.d6())*0.5;
+		case 6:case 7:
+			pressure = (Dice._2d6())*0.1;
 			break;
-		case 10:
-			pressure = (Dice.d6()+Dice.d6())*1;
+		case 8:case 9:case 10:
+			pressure = (Dice._2d6())*0.2;
 			break;
-		case 11:case 12:
-			pressure = (Dice.d6()+Dice.d6())*2;
+		case 11:
+			pressure = (Dice._2d6())*0.5;			
 			break;
-		case 13:case 14:
-			pressure = (Dice.d6()+Dice.d6())*5;
+		case 12:
+			pressure = (Dice._2d6())*1;
+			break;
+		case 13:
+			pressure = (Dice._2d6())*3;			
+			break;
+		case 14:
+			pressure = (Dice._2d6())*5;			
 			break;
 		default:
-			pressure =(Dice.d6()+Dice.d6())*0.01;
+			pressure =(Dice._2d6())*0.001;
 			break;
 		}
-		if(atmoshericComposition.isEmpty()) pressure=0.001;
+		if(atmoshericComposition.isEmpty()) pressure=0;
 		pressure *= mass;
 		return pressure;
 	}
@@ -523,9 +589,11 @@ public final class GenerateTerrestrialPlanet {
 				}
 
 				break;
-			case 3:case 4:case 5:
+			case 3:
 				makeAtmoshpere.add("CO2");
 				break;
+			case 4:case 5:
+				makeAtmoshpere.add("H2O");//Obs just adding water to below
 			case 6:case 7:case 8:
 				makeAtmoshpere.add("N2");
 				makeAtmoshpere.add("CO2");
@@ -554,15 +622,14 @@ public final class GenerateTerrestrialPlanet {
 				if(Dice.d6()<2) makeAtmoshpere.add("Ar");
 				if(Dice.d6()<2) makeAtmoshpere.add("He");
 				if(Dice.d6()<2) makeAtmoshpere.add("NH3");
-				if(tectonicActivityGroup== "Extreme"){
-					makeAtmoshpere.add("SO2");
-					makeAtmoshpere.add("H2S");
-				}
+
 
 				break;
-			case 3:case 4:case 5:
+			case 3:
 				makeAtmoshpere.add("CO2");
 				break;
+				case 4:case 5:
+					makeAtmoshpere.add("H2O");//Obs just adding water to below
 			case 6:case 7:case 8:
 				makeAtmoshpere.add("N2");
 				makeAtmoshpere.add("CO2");
@@ -594,16 +661,15 @@ public final class GenerateTerrestrialPlanet {
 				if(Dice.d6()<2) makeAtmoshpere.add("He");
 				if(Dice.d6()<2) makeAtmoshpere.add("H2");
 				if(Dice.d6()<2) makeAtmoshpere.add("NH3");
-				if(tectonicActivityGroup== "Extreme"){
-					makeAtmoshpere.add("SO2");
-					makeAtmoshpere.add("H2S");
-				}
+
 
 				break;
-			case 3:case 4:case 5:
+			case 3:
 				makeAtmoshpere.add("CO2");
 				break;
-			case 6:case 7:case 8:
+			
+				
+			case 4:case 5:case 6:case 7:case 8:
 				makeAtmoshpere.add("N2");
 				makeAtmoshpere.add("CO2");
 				break;
@@ -634,10 +700,7 @@ public final class GenerateTerrestrialPlanet {
 				if(Dice.d6()<2) makeAtmoshpere.add("H2");
 				if(Dice.d6()<2) makeAtmoshpere.add("CO");
 				if(Dice.d6()<2) makeAtmoshpere.add("NH3");
-				if(tectonicActivityGroup== "Extreme"){
-					makeAtmoshpere.add("SO2");
-					makeAtmoshpere.add("H2S");
-				}
+
 
 				break;
 			case 3:case 4:case 5:
@@ -675,15 +738,11 @@ public final class GenerateTerrestrialPlanet {
 				if(Dice.d6()<2) makeAtmoshpere.add("He");
 				if(Dice.d6()<2) makeAtmoshpere.add("H2");
 				if(Dice.d6()<2) makeAtmoshpere.add("NH3");
-				if(tectonicActivityGroup== "Extreme"){
-					makeAtmoshpere.add("SO2");
-					makeAtmoshpere.add("H2S");
-					if(Dice.d6()<2) makeAtmoshpere.add("H2SO4");
-				}
 
 				break;
 			case 3:case 4:case 5:
 				makeAtmoshpere.add("Ne");
+				makeAtmoshpere.add("N2");
 				break;
 			case 6:case 7:case 8:
 				makeAtmoshpere.add("He");
@@ -691,6 +750,7 @@ public final class GenerateTerrestrialPlanet {
 				break;
 			case 9:case 10:
 				makeAtmoshpere.add("H2");
+				makeAtmoshpere.add("N2");
 				break;
 			case 11:case 12:
 				makeAtmoshpere.add("He");
@@ -699,6 +759,12 @@ public final class GenerateTerrestrialPlanet {
 				makeAtmoshpere.add("N2");
 				break;
 			};
+		}
+		
+		if(tectonicActivityGroup== "Extreme" && Dice.d6()<3){
+			makeAtmoshpere.add("SO2");
+			makeAtmoshpere.add("H2S");
+			if(Dice.d6()<2) makeAtmoshpere.add("H2SO4");
 		}
 
 		double retainedGases = 0.02783 * baseTemperature / Math.pow(Math.pow((19600 * gravity * radius),0.5) /11200, 2);

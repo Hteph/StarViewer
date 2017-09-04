@@ -33,6 +33,7 @@ public class Planet extends OrbitalObjects {
 	private String tectonicActivityGroup;
 	private double orbitalInclination;
 	private boolean boilingAtmo;
+	private ArrayList<StellarObject> lunarObjects;
 	
 	public boolean isBoilingAtmo() {
 		return boilingAtmo;
@@ -281,6 +282,18 @@ public class Planet extends OrbitalObjects {
 
 	public String getClassificationName() {
 		return classificationName;
+	}
+
+	public ArrayList<StellarObject> getLunarObjects() {
+		return lunarObjects;
+	}
+
+	public void setLunarObjects(ArrayList<StellarObject> lunarObjects) {
+		this.lunarObjects = lunarObjects;
+	}
+
+	public void setClassificationName(String classificationName) {
+		this.classificationName = classificationName;
 	}
 
 
