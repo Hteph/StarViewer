@@ -34,14 +34,8 @@ public class Planet extends OrbitalObjects {
 	private double orbitalInclination;
 	private boolean boilingAtmo;
 	private ArrayList<StellarObject> lunarObjects;
-	
-	public boolean isBoilingAtmo() {
-		return boilingAtmo;
-	}
-
-	public void setBoilingAtmo(boolean boilingAtmo) {
-		this.boilingAtmo = boilingAtmo;
-	}
+	private double lunarTidal;
+private boolean planetLocked;
 
 	private String classificationName;
 	private String lifeType;
@@ -60,12 +54,22 @@ public class Planet extends OrbitalObjects {
 		return "Planet " + name + ": " + description + ", radius=" + radius
 				+ ", hydrosphereDescription=" + hydrosphereDescription +", hydro%="+hydrosphere+ ", pressure="
 				+ atmoPressure + ",\n surfaceTemp=" + surfaceTemp + ", lifeType=" + lifeType + "\n Atmo"+atmoshericComposition.toString();
-	}	
+	}
+	
+	public void wipeMoons() {
+		lunarObjects.removeAll(getLunarObjects());
+	}
 
 	//Internal Methods ----------------------------------------
 
 	// Getters and Setters -------------------------------------
+	public boolean isBoilingAtmo() {
+		return boilingAtmo;
+	}
 
+	public void setBoilingAtmo(boolean boilingAtmo) {
+		this.boilingAtmo = boilingAtmo;
+	}
 	public double getMass() {
 		return mass;
 	}
@@ -294,6 +298,22 @@ public class Planet extends OrbitalObjects {
 
 	public void setClassificationName(String classificationName) {
 		this.classificationName = classificationName;
+	}
+
+	public double getLunarTidal() {
+		return lunarTidal;
+	}
+
+	public void setLunarTidal(double lunarTidal) {
+		this.lunarTidal = lunarTidal;
+	}
+
+	public boolean isPlanetLocked() {
+		return planetLocked;
+	}
+
+	public void setPlanetLocked(boolean planetLocked) {
+		this.planetLocked = planetLocked;
 	}
 
 

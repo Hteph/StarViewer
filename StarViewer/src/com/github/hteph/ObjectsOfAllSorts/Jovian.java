@@ -21,7 +21,7 @@ public class Jovian extends OrbitalObjects {
 
 	private double orbitalInclination;
 	String lifeType;
-
+	private ArrayList<StellarObject> lunarObjects;
 	
 
 
@@ -137,6 +137,33 @@ public class Jovian extends OrbitalObjects {
 	public String getClassificationName() {
 		return classificationName;
 	}
+
+
+
+	public ArrayList<StellarObject> getLunarObjects() {
+		return lunarObjects;
+	}
+
+
+
+	public void setLunarObjects(ArrayList<StellarObject> lunarObjects) {
+		this.lunarObjects = lunarObjects;
+	}
+
+
+
+	public void setMass(int mass) {
+		this.mass = mass;
+	}
+
+
+
+	public void setClassificationName(String classificationName) {
+		this.classificationName = classificationName;
+	}
+
+
+
 
 
 }
