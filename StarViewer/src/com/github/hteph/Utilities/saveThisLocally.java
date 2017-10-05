@@ -16,7 +16,7 @@ import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 public class saveThisLocally {
 
 
-	public static void saveThis(ArrayList<ArrayList> testSystem) {
+	public static void saveThis(ArrayList<ArrayList<StellarObject>> testSystem) {
 		
 		try {
 			FileOutputStream fos = new FileOutputStream("myGalaxy.ser");
@@ -33,14 +33,14 @@ public class saveThisLocally {
 	
 	
 	
-	public static ArrayList<ArrayList> restoreSaved(){
+	public static ArrayList<ArrayList<StellarObject>> restoreSaved(){
 		
-		ArrayList<ArrayList> result=null;
+		ArrayList<ArrayList<StellarObject>> result=null;
 		
 		try {
 		FileInputStream fis = new FileInputStream("myGalaxy.ser");
 		ObjectInputStream ois = new ObjectInputStream(fis);
-		result = (ArrayList<ArrayList>) ois.readObject();
+		result = (ArrayList<ArrayList<StellarObject>>) ois.readObject();
 		ois.close();
 		
 		
@@ -52,7 +52,7 @@ public class saveThisLocally {
 				System.out.println("oh NO!");
 			}
 			ArrayList<StellarObject> systemList = StarSystemGenerator.Generator((Star) star);
-			ArrayList<ArrayList> testSystem = new ArrayList<>();
+			ArrayList<ArrayList<StellarObject>> testSystem = new ArrayList<>();
 
 			testSystem.add(systemList);
 			saveThisLocally.saveThis(testSystem);

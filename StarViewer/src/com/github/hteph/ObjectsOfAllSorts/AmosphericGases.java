@@ -19,6 +19,9 @@ public class AmosphericGases implements Serializable{
 		this.name = name;
 		this.percentageInAtmo = percentageInAtmo;
 	}
+	
+	
+	
 //Getters and Setters-----------------------------------------------------------------------------------------
 
 

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import com.github.hteph.ObjectsOfAllSorts.AsteroidBelt;
 import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
-import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.Dice;
 
 public final class GenerateAsteroidBelt {

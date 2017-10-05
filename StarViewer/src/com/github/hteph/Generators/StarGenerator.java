@@ -6,7 +6,6 @@ import com.github.hteph.Utilities.Dice;
 import com.github.hteph.Utilities.NameGenerator;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public final class StarGenerator {
@@ -25,9 +24,9 @@ public final class StarGenerator {
 		double age; // in billion of earth years
 		int temperature;	
 		NameGenerator randomName = null;
-		
+
 		int testDice =Dice._3d6()-3;
-		
+
 		double randN =testDice/(15.0+Math.random()/10); //turning the dice roll into a continous sligthly skewed randomnumber.
 
 
@@ -45,26 +44,23 @@ public final class StarGenerator {
 
 		classification = findStarClass(temperature);
 
-		DecimalFormat df = new DecimalFormat("#.####");
-
-
 		int abundance;
 		int[] abundanceArray = new int[] {0,10,13,19,22};
-		int retVal = Arrays.binarySearch(abundanceArray, (int) (Dice.d10()+Dice.d10()+age));
+
+		int retVal = Arrays.binarySearch(abundanceArray, (int) (Dice._2d6()+age));
 
 		if(retVal<0) abundance = 2-retVal+1;
 		else abundance = 2-retVal;
 
+		randomName = new NameGenerator("RomanNames");
 
-			randomName = new NameGenerator("RomanNames");
-	
-			int randomNummer = 2+Dice.d6()/2;
-		
+		int randomNummer = 2+Dice.d6()/2;
+
 		StellarObject star = new Star(randomName.compose(randomNummer), "Standard text", lumosity, mass, diameter, classification, age, abundance);
 		return star;
 	}
 
-//Inner Methods	-------------------------------------------------------------------------------
+	//Inner Methods	-------------------------------------------------------------------------------
 	private static String findStarClass(int temperature){
 
 		String[] classLetter ={"Y","T","M","K","G","F","A","B","O"};
@@ -72,8 +68,6 @@ public final class StarGenerator {
 		int decimal;
 		String classification;
 
-
-		
 		int retValue =  Arrays.binarySearch(temperatureClass,temperature);
 
 		if(retValue<0) decimal =Math.min(9, 10- (int) (10.0*(temperature-temperatureClass[-retValue-2])/(1.0*temperatureClass[-retValue-1]-temperatureClass[-retValue-2])));

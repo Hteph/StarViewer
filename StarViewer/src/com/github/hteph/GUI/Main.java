@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.github.hteph.Generators.StarGenerator;
 import com.github.hteph.Generators.StarSystemGenerator;
-import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
+import com.github.hteph.ObjectsOfAllSorts.Planet;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.PrintThisPage;
@@ -35,10 +35,16 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 
 
-		ArrayList<ArrayList> oldSystems = new ArrayList<>();
-		
-		oldSystems = saveThisLocally.restoreSaved();
-		
+		ArrayList<ArrayList<StellarObject>> oldSystems = new ArrayList<>();
+
+
+		try {
+			oldSystems = saveThisLocally.restoreSaved();
+		} catch (Exception e2) {
+			System.out.println("restore object fail");
+			e2.printStackTrace();
+		}
+
 		StellarObject star = null;
 		try {
 			star = StarGenerator.Generator();
@@ -46,11 +52,13 @@ public class Main extends Application {
 			System.out.println("oh NO! Name Error");
 		}
 		ArrayList<StellarObject> systemList = StarSystemGenerator.Generator((Star) star);
-		
+
 		oldSystems.add(systemList);
 
-		final ArrayList<ArrayList> newSystems = oldSystems;
+		final ArrayList<ArrayList<StellarObject>> newSystems = oldSystems;
 
+
+		//Generate GUI--------------------------------------------------------------------------------------
 		try {
 			Group root = new Group();
 			Scene scene = new Scene(root,800,1000);
@@ -62,7 +70,7 @@ public class Main extends Application {
 			TabPane tabPane = new TabPane();
 			tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 			borderPane.setCenter(tabPane);
-			
+
 			for (int i = 0; i < newSystems.size(); i++) {
 				Tab tab = new Tab();
 
@@ -84,7 +92,6 @@ public class Main extends Application {
 				for (int n = 0; n < centralStar.getOrbitalObjects().size(); n++) {
 					Tab orbit = new Tab();
 
-
 					// String orbitingStarName = centralStar.getOrbitalObjects().get(n).getName();
 					StellarObject thingOrbitingStar = centralStar.getOrbitalObjects().get(n);
 
@@ -97,19 +104,29 @@ public class Main extends Application {
 					moonTabs.setSide(Side.BOTTOM);
 					moonTabs.prefHeightProperty().bind(scene.heightProperty());
 					moonTabs.prefWidthProperty().bind(scene.widthProperty());
+					
+					int aNumber=1;
+					if(thingOrbitingStar instanceof Planet) aNumber +=((Planet) thingOrbitingStar).getLunarObjects().size();
 
-					for (int j = 0; j < 1; j++) {
+					for (int j = 0; j < aNumber; j++) {
+						
 						Tab moon = new Tab();
-
-						String objectName = thingOrbitingStar.getName();
-
-						moon.setText(objectName);
 						VBox moonbox = new VBox();
+					if(j==0) {	
+						String objectName = thingOrbitingStar.getName();
+						moon.setText(objectName);
 						moonbox.getChildren().add(new Label(objectName));
 						moonbox.getChildren().add(Pagemaker.generator(thingOrbitingStar));
+					}else {
+						String objectName = ((Planet) thingOrbitingStar).getLunarObjects().get(j-1).getName();						
+						moon.setText(objectName);
+						moonbox.getChildren().add(new Label(objectName));
 						
+						moonbox.getChildren().add(Pagemaker.generator(((Planet) thingOrbitingStar).getLunarObjects().get(j-1)));
+					}
+										
 						//Utility box
-						
+
 						HBox utility = new HBox();
 						utility.setAlignment(Pos.BOTTOM_CENTER);
 						utility.setPadding(new Insets(15, 12, 15, 12));
@@ -131,7 +148,7 @@ public class Main extends Application {
 							}
 
 						});
-						
+
 						moonbox.getChildren().add(utility);
 						moon.setContent(moonbox);
 						moonTabs.getTabs().add(moon);
@@ -144,8 +161,6 @@ public class Main extends Application {
 				tab.setContent(starBox);
 				tabPane.getTabs().add(tab);	            
 			}
-
-
 
 			root.getChildren().add(borderPane);	        
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

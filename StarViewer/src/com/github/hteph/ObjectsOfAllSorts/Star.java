@@ -6,6 +6,10 @@ import com.github.hteph.Utilities.numberUtilities;
 
 public class Star extends StellarObject {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double lumosity;	
 	private double radius;
 	private String classification;
@@ -74,6 +78,13 @@ public class Star extends StellarObject {
 
 	public double getMass() {
 		return mass;
+	}
+
+
+	@Override
+	public double getOrbitalDistance() {
+		// TODO This should be implemented with multiple star system.
+		return 0;
 	}
 
 

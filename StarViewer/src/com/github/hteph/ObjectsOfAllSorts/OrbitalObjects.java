@@ -2,6 +2,10 @@ package com.github.hteph.ObjectsOfAllSorts;
 
 public class OrbitalObjects extends StellarObject {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected double orbitDistance;
 	protected double orbitaleccentricity;
 	protected char orbitalObjectClass;
@@ -16,7 +20,7 @@ public class OrbitalObjects extends StellarObject {
 		this.orbitingAround =orbitingAround;
 	}
 
-	public double getOrbitDistance() {
+	public double getOrbitalDistance() {
 		return orbitDistance;
 	}
 

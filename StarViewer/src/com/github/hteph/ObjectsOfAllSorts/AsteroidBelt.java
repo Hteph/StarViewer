@@ -2,6 +2,10 @@ package com.github.hteph.ObjectsOfAllSorts;
 
 public class AsteroidBelt extends OrbitalObjects{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double mass;	
 	private double eccentricity;
 	private String asterioidBeltType;
@@ -48,7 +52,7 @@ public class AsteroidBelt extends OrbitalObjects{
 		this.eccentricity = eccentricity;
 	}
 
-	public double getOrbitDistance() {
+	public double getOrbitalDistance() {
 		return orbitDistance;
 	}
 

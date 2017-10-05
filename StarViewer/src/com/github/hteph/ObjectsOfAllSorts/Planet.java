@@ -1,13 +1,21 @@
 package com.github.hteph.ObjectsOfAllSorts;
 
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
+import com.github.hteph.Utilities.atmoCompositionComparator;
+import com.github.hteph.Utilities.lunarObjectDistanceComparator;
 import com.github.hteph.Utilities.numberUtilities;
 
 public class Planet extends OrbitalObjects {
 
-	
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1218204002803509339L;
 	private double mass;
 	private int radius;
 	private double gravity;
@@ -22,7 +30,7 @@ public class Planet extends OrbitalObjects {
 	private double magneticField;
 	private String hydrosphereDescription;
 	private int hydrosphere;
-	private ArrayList<AmosphericGases> atmoshericComposition = new ArrayList<AmosphericGases>();
+	private Set<AmosphericGases> atmoshericComposition = new TreeSet<AmosphericGases>(new atmoCompositionComparator());
 	private double atmoPressure;
 	private int surfaceTemp;
 	private double[] rangeBandTemperature =new double[10];
@@ -33,10 +41,13 @@ public class Planet extends OrbitalObjects {
 	private String tectonicActivityGroup;
 	private double orbitalInclination;
 	private boolean boilingAtmo;
-	private ArrayList<StellarObject> lunarObjects;
-	private double lunarTidal;
-private boolean planetLocked;
 
+	private Set<StellarObject> lunarObjects = new TreeSet<StellarObject>(new lunarObjectDistanceComparator());
+	private double lunarTidal;
+	private boolean planetLocked;
+	private double lunarOrbitalPeriod;
+	private double lunarOrbitDistance; //in planetRadii
+	
 	private String classificationName;
 	private String lifeType;
 
@@ -44,7 +55,7 @@ private boolean planetLocked;
 	public Planet(String name, String description, String classificationName, double orbitDistance, StellarObject orbitingAround) {
 		super(name, description, orbitDistance, orbitingAround);
 		this.classificationName=classificationName;
-		
+
 
 	}
 	//Methods --------------------------------------------------
@@ -55,7 +66,7 @@ private boolean planetLocked;
 				+ ", hydrosphereDescription=" + hydrosphereDescription +", hydro%="+hydrosphere+ ", pressure="
 				+ atmoPressure + ",\n surfaceTemp=" + surfaceTemp + ", lifeType=" + lifeType + "\n Atmo"+atmoshericComposition.toString();
 	}
-	
+
 	public void wipeMoons() {
 		lunarObjects.removeAll(getLunarObjects());
 	}
@@ -174,22 +185,23 @@ private boolean planetLocked;
 		this.hydrosphere = hydrosphere;
 	}
 
-	public ArrayList<AmosphericGases> getAtmoshericComposition() {
+	public Set<AmosphericGases> getAtmoshericComposition() {
 		return atmoshericComposition;
 	}
-	
+
 	public String getAtmoshericCompositionParsed() {
 		String listOfGas=" ";
-		
+
 		for(AmosphericGases next: atmoshericComposition) {
-			
+
 			listOfGas+=" "+next.toString();
 		}
-		
+
 		return listOfGas;
 	}
 
-	public void setAtmoshericComposition(ArrayList<AmosphericGases> atmoshericComposition) {
+	public void setAtmoshericComposition(Set<AmosphericGases> atmoshericComposition) {
+
 		this.atmoshericComposition = atmoshericComposition;
 	}
 
@@ -200,7 +212,6 @@ private boolean planetLocked;
 	public void setAtmoPressure(double atmoPressure) {
 		this.atmoPressure = atmoPressure;
 	}
-
 
 
 	public double getSurfaceTemp() {
@@ -253,7 +264,6 @@ private boolean planetLocked;
 	}
 
 
-
 	public String getTectonicActivityGroup() {
 		return tectonicActivityGroup;
 	}
@@ -270,8 +280,6 @@ private boolean planetLocked;
 		this.orbitalInclination = orbitalInclination;
 	}
 
-
-
 	public String getLifeType() {
 		return lifeType;
 	}
@@ -280,7 +288,7 @@ private boolean planetLocked;
 		this.lifeType = lifeType;
 	}
 
-	public double getOrbitDistance() {
+	public double getOrbitalDistance() {
 		return orbitDistance;
 	}
 
@@ -289,11 +297,14 @@ private boolean planetLocked;
 	}
 
 	public ArrayList<StellarObject> getLunarObjects() {
-		return lunarObjects;
+		
+		ArrayList<StellarObject> moonList = new ArrayList<>(lunarObjects);
+		
+		return moonList;
 	}
 
 	public void setLunarObjects(ArrayList<StellarObject> lunarObjects) {
-		this.lunarObjects = lunarObjects;
+		this.lunarObjects.addAll(lunarObjects);
 	}
 
 	public void setClassificationName(String classificationName) {
@@ -316,6 +327,24 @@ private boolean planetLocked;
 		this.planetLocked = planetLocked;
 	}
 
+	public double getLunarOrbitalPeriod() {
+		return lunarOrbitalPeriod;
+	}
 
+	public void setLunarOrbitalPeriod(double lunarOrbitalPeriod) {
+		this.lunarOrbitalPeriod = numberUtilities.nicefyDouble(lunarOrbitalPeriod);
+	}
+	
+	public void addLunarObjects(StellarObject lunarObjects) {
+		this.lunarObjects.add(lunarObjects);
+	}
 
+	public double getLunarOrbitDistance() {
+		return lunarOrbitDistance;
+	}
+
+	public void setLunarOrbitDistance(double lunarOrbitDistance) {
+		this.lunarOrbitDistance = lunarOrbitDistance;
+	}
+	
 }

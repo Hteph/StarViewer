@@ -39,7 +39,7 @@ public abstract class StellarObject implements Serializable{
 		return description;		
 	}
 
-
+	public abstract double getOrbitalDistance();
 
 	
 }

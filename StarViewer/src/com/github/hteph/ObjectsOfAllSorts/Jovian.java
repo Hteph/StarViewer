@@ -7,6 +7,11 @@ import com.github.hteph.Utilities.numberUtilities;
 public class Jovian extends OrbitalObjects {
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private int radius;
 
 	private int mass;

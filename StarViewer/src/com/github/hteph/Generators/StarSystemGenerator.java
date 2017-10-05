@@ -3,7 +3,6 @@ package com.github.hteph.Generators;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.Utilities.Dice;
@@ -117,24 +116,24 @@ public final class StarSystemGenerator  {
 			case 't': 
 				classificationName = "Planetoid";
 				description = "Small and nicely rounded";
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star,0));
 				objectCounter++;
 				break;
 			case 'T':
 				classificationName = "Terrestial";
 				description = "Large and round";
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star,0));
 				objectCounter++;
 				break;
 			case 'C':
 				classificationName = "Catched Terrestial";
 				description = "Large and round, but from not originated in this system";
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" "+numeral, description,classificationName, orbitalDistancesArray[i], orbitalObjectBasicList[i], star,0));
 				objectCounter++;
 				break;
 
 			case 'c': //TODO this should use a special generator to allow for strange stuff as hulks, ancient stations etc etc
-				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" " +numeral, "Smaller than a planet, but not one of those asteroids, and not from here to start with","Catched object", orbitalDistancesArray[i], orbitalObjectBasicList[i], star));
+				star.setOrbitalObjects(GenerateTerrestrialPlanet.Generator(star.getName()+" " +numeral, "Smaller than a planet, but not one of those asteroids, and not from here to start with","Catched object", orbitalDistancesArray[i], orbitalObjectBasicList[i], star,0));
 				objectCounter++;
 				break;
 

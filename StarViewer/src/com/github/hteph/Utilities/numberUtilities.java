@@ -1,7 +1,5 @@
 package com.github.hteph.Utilities;
 
-import java.text.DecimalFormat;
-
 public final class numberUtilities {
 	
 	

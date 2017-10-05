@@ -36,7 +36,7 @@ public final class JovianGenerator {
 		double orbitalInclination;
 
 
-		String lifeType; // TODO allow for Jovian life in the future
+		//String lifeType; // TODO allow for Jovian life in the future
 
 		Jovian gasGiant = new Jovian (name, description, classificationName, orbitDistance, orbitingAround);
 

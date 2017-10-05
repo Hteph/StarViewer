@@ -1,19 +1,12 @@
 package com.github.hteph.GUI;
 
-import java.awt.Label;
-import java.util.Arrays;
-
-import com.github.hteph.Generators.StarGenerator;
-import com.github.hteph.Generators.StarSystemGenerator;
 import com.github.hteph.ObjectsOfAllSorts.AsteroidBelt;
 import com.github.hteph.ObjectsOfAllSorts.Jovian;
-import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Planet;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.ObjectsOfAllSorts.StellarObject;
 import com.github.hteph.ObjectsOfAllSorts.TemperatureRangeBandHelpClass;
 
-import javafx.animation.RotateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -21,7 +14,6 @@ import javafx.geometry.Pos;
 import javafx.scene.AmbientLight;
 import javafx.scene.Group;
 import javafx.scene.PointLight;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -43,7 +35,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 public final class Pagemaker {
 
@@ -61,7 +52,7 @@ public final class Pagemaker {
 		if(target instanceof AsteroidBelt) page = asteroidBeltPageGenerator((AsteroidBelt) target);
 		return page;
 	}
-
+	//Inner Methods -----------------------------------------------
 	private static VBox asteroidBeltPageGenerator(AsteroidBelt asteroidBelt) {
 		VBox infoPage = new VBox();
 
@@ -138,7 +129,7 @@ public final class Pagemaker {
 		return infoPage;
 	}
 
-	//Inner Methods -----------------------------------------------
+
 
 	private static VBox jovianPageGenerator(Jovian jovian) {
 		VBox infoPage = new VBox();
@@ -555,22 +546,21 @@ public final class Pagemaker {
 			break;
 		case 'K':
 			starColour.setDiffuseColor(Color.ORANGE);
-
 			break;
 		case 'G':
 			starColour.setDiffuseColor(Color.YELLOW);
 			break;
 		case 'F':
-			starColour.setDiffuseColor(Color.LIGHTYELLOW);
+			starColour.setDiffuseColor(Color.LIGHTGREEN);
 			break;
 		case 'A':
-			starColour.setDiffuseColor(Color.BLUE);
+			starColour.setDiffuseColor(Color.WHITE);
 			break;
 		case 'B':
 			starColour.setDiffuseColor(Color.LIGHTBLUE);	       
 			break;
 		case 'O':
-			starColour.setDiffuseColor(Color.WHITE);
+			starColour.setDiffuseColor(Color.BLUE);
 			break;
 		default:
 			starColour.setDiffuseColor(Color.DARKORCHID);
