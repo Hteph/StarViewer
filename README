@@ -6,19 +6,25 @@ Inspired by GURPS Traveller with additional information from multiple sources (l
 
 This is a new direction with a Graphic User Interface using JavaFX (due to IDE shenaigans I feel it was best to start a new repository).
 
-There is now a runnable .jar file in the rpository with a version that actually produces some results to view.
+There is now a runnable .jar file in the repository with a version that actually produces some results to view.
 
-Todo (2017-09-01) (in no particular order)
+Todo (2017-10-05) (in no particular order)
 Multiple star systems
-Moons
+Moons and rings for Jovians
 Expand on Lifeforms (rigth now they are just true/false (with true equalling Oxygen breather).
-exotic captured objects (in planetary and lunar orbits)
+Exotic captured objects (in planetary and lunar orbits)
 Develop Asteroid belts further.
-Saving persitent over new versions.
-Editing descriptions (no idea to be able to do this before saving is enabled)
+Saving persistency over new versions, pobably by a import/export tool.
+Editing descriptions (no idea to do this before stable saving is enabled)
 Server version with webb interface
 Java docs and manual (but that is  hardly worth the effort until a less fluent version is due)
 Art ....
+
+version 0.3 (2017-10-05)
+
+Added basic moons to terrestial worlds (Jovian needs a bit more thoughts as they usually have a very larg number of these together with rings and in all kinds of strange configurations).
+
+Also quite a lot of bug stomping/refactoring and general optimisation.
 
 version 0.2 (2017-09-04)
 
