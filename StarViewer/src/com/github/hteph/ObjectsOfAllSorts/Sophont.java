@@ -1,14 +1,11 @@
 package com.github.hteph.ObjectsOfAllSorts;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.github.hteph.Utilities.Dice;
 import com.github.hteph.Utilities.NameGenerator;
-
-import javafx.collections.ObservableMap;
 
 public class Sophont {
 	
@@ -16,7 +13,7 @@ public class Sophont {
 	private String description;
 	private StellarObject homeworld;
 	private Map<String,Attribute> attributes = new HashMap<>();
-	private String biomassEnvironment;
+	private String environment;
 	
 
 			
@@ -65,7 +62,7 @@ public class Sophont {
 
 	public Map<String, Attribute> getAttributes() {
 		//Can change details in the attributes but not remove or add new ones
-		Map<String,Attribute> immutable = new HashMap(attributes);
+		Map<String,Attribute> immutable = new HashMap<String, Attribute>(attributes);
 		
 		return immutable;
 	}
@@ -91,13 +88,13 @@ public class Sophont {
 		attributes.remove(name);
 	}
 
-	public void setBiomassEnvironment(String environment) {
+	public void setEnvironment(String environment) {
 		
-		biomassEnvironment = environment;	
+		this.environment = environment;	
 	}
 
-	public String getBiomassEnvironment() {
-		return biomassEnvironment;
+	public String getEnvironment() {
+		return environment;
 	}
 	
 
