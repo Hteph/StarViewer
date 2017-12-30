@@ -1,5 +1,7 @@
 package com.github.hteph.ObjectsOfAllSorts;
 
+import java.util.Arrays;
+
 public class AsteroidBelt extends OrbitalObjects{
 
 	/**
@@ -10,7 +12,9 @@ public class AsteroidBelt extends OrbitalObjects{
 	private double eccentricity;
 	private String asterioidBeltType;
 	private double asteroidBeltWidth;
-
+	private String objectClass = "Asteroid Belt";
+	
+	private double[] sizeDistribution = new double[2]; // Average size/ Max size
 
 
 	// Constructor ----------------------------------------------
@@ -20,17 +24,19 @@ public class AsteroidBelt extends OrbitalObjects{
 	}
 	//Methods --------------------------------------------------
 
-	@Override
-	public String toString() {
-		return "Ateroid Belt " + name + ": " + description;
-	}	
+	
 
 	//Internal Methods ----------------------------------------
 
 	// Getters and Setters -------------------------------------
-	private String objectClass="Asteroid Belt";
+	
+	
 	public String getObjectClass() {
 		return objectClass;
+	}
+	
+	public void setObjectClass(String objectClass) {
+		this.objectClass = objectClass;
 	}
 
 	public void setAsteroidBeltWidth(double asteroidBeltWidth) {
@@ -70,6 +76,25 @@ public class AsteroidBelt extends OrbitalObjects{
 
 	public void setAsteroidBeltWidht(double asteroidBeltWidth) {
 		this.asteroidBeltWidth = asteroidBeltWidth;
+	}
+
+	public double[] getSizeDistribution() {
+		return sizeDistribution;
+	}
+
+	public void setSizeDistribution(double average, double max) {
+		
+		this.sizeDistribution[0] = average;
+		this.sizeDistribution[1] =max;
+	}
+
+
+	//to String
+
+	@Override
+	public String toString() {
+		return "AsteroidBelt [asterioidBeltType=" + asterioidBeltType + ", asteroidBeltWidth=" + asteroidBeltWidth
+				+ ", sizeDistribution=" + Arrays.toString(sizeDistribution) + "]";
 	}
 
 

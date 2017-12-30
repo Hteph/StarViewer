@@ -46,11 +46,7 @@ public class Main extends Application {
 		}
 
 		StellarObject star = null;
-		try {
-			star = StarGenerator.Generator();
-		} catch (IOException e1) {
-			System.out.println("oh NO! Name Error");
-		}
+		star = StarGenerator.Generator();
 		ArrayList<StellarObject> systemList = StarSystemGenerator.Generator((Star) star);
 
 		oldSystems.add(systemList);

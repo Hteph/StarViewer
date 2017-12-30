@@ -15,7 +15,7 @@ public final class StarGenerator {
 	}
 
 	//Method --------------------------------------------------------------------
-	public static  StellarObject Generator() throws IOException{
+	public static  StellarObject Generator() {
 
 		double lumosity;
 		double mass;
@@ -52,7 +52,12 @@ public final class StarGenerator {
 		if(retVal<0) abundance = 2-retVal+1;
 		else abundance = 2-retVal;
 
-		randomName = new NameGenerator("RomanNames");
+		try {
+			randomName = new NameGenerator("RomanNames");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		int randomNummer = 2+Dice.d6()/2;
 

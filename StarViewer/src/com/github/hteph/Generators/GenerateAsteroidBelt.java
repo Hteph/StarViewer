@@ -5,9 +5,9 @@ import com.github.hteph.ObjectsOfAllSorts.AsteroidBelt;
 import com.github.hteph.ObjectsOfAllSorts.OrbitalObjects;
 import com.github.hteph.ObjectsOfAllSorts.Star;
 import com.github.hteph.Utilities.Dice;
+import com.github.hteph.Utilities.numberUtilities;
 
 public final class GenerateAsteroidBelt {
-
 
 
 	private GenerateAsteroidBelt() {
@@ -26,9 +26,7 @@ public final class GenerateAsteroidBelt {
 
 		double snowLine = 5 * Math.pow(orbitingAround.getLumosity(), 0.5);
 
-
 		if(orbitalDistancesArray[orbitNumber]>snowLine) outerZone=true;
-
 
 		//Eccentricity 
 
@@ -40,7 +38,6 @@ public final class GenerateAsteroidBelt {
 		}else{
 			density = 0.3+(Dice.d6()+Dice.d6()-2)*0.05;
 		}
-
 
 		// TODO the general type and composition of the belt can be further fleshed out
 		int[] typeArray = new int[] {-2,-1,6,11};
@@ -69,18 +66,41 @@ public final class GenerateAsteroidBelt {
 
 		if(massBase<0) massBase = -massBase-1;
 
+		belt.setMass( (Dice.d10())*Math.pow(10, 4-massBase));		
 
-		belt.setMass( (Dice.d10())*Math.pow(10, 4-massBase));
+		double beltWitdth=0;	
 
-		double beltWitdth=0;
+		if(orbitalObjectBasicList[orbitNumber]=='j' || orbitalObjectBasicList[orbitNumber]=='J' ) {
 
-		if(orbitNumber>0) beltWitdth = orbitalDistancesArray[orbitNumber]-orbitalDistancesArray[orbitNumber-1];
-		else  beltWitdth = orbitalDistancesArray[orbitNumber]/2;
-			
+			belt.setObjectClass("Planetary Ring");
+			belt.setSizeDistribution(0.001, 0.01);
+		}
+		else {
+			belt.setObjectClass("Asteroid belt");		
 
-		if(orbitNumber>0) if( orbitalObjectBasicList[orbitNumber-1]=='j' || orbitalObjectBasicList[orbitNumber-1]=='j') beltWitdth /=2;
-		else if(orbitalObjectBasicList[orbitNumber+1]=='J' || orbitalObjectBasicList[orbitNumber+1]=='J') beltWitdth /=2;
+			if(orbitNumber>0) beltWitdth = orbitalDistancesArray[orbitNumber]-orbitalDistancesArray[orbitNumber-1];
+			else  beltWitdth = orbitalDistancesArray[orbitNumber]/2;
 
+			if(orbitNumber>0) {
+				if( orbitalObjectBasicList[orbitNumber-1]=='j' || orbitalObjectBasicList[orbitNumber-1]=='j')  beltWitdth /=2;
+			}
+
+			if(orbitNumber<orbitalObjectBasicList.length-1) {
+				if(orbitalObjectBasicList[orbitNumber+1]=='J' || orbitalObjectBasicList[orbitNumber+1]=='J') beltWitdth /=2;
+			}
+
+			//Size distribution
+			Double[] mainAverage = {0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.3, 0.5};
+			int[] averageDist = {2,3,5,7,8,10,11,12};
+			Double mainAvgSize=(Double) numberUtilities.chooseFromVector(mainAverage, averageDist, Dice._2d6());
+
+			Double [] maxSize = {1.0,5.0,10.0,50.0,100.0,500.0};
+			int[] maxDist = {1,2,3,4,5,6};
+			Double maxSizeInBelt =(Double) numberUtilities.chooseFromVector(maxSize, maxDist, Dice.d6());
+
+			belt.setSizeDistribution(mainAvgSize, maxSizeInBelt);
+
+		}
 
 		belt.setAsteroidBeltWidht(beltWitdth);
 

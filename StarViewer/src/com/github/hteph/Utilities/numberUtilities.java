@@ -1,5 +1,7 @@
 package com.github.hteph.Utilities;
 
+import java.util.Arrays;
+
 public final class numberUtilities {
 	
 	
@@ -21,6 +23,16 @@ public final class numberUtilities {
 	else  number = (Math.pow(10, Math.log10(number)-2)*(int) number/Math.pow(10, Math.log10(number)-2));
 		
 		return number;
+	}
+	
+	public static Object chooseFromVector(Object[] arrayOfThings, int[] distArray, int diceRoll ) {
+		
+		int retVal = Arrays.binarySearch(distArray, diceRoll);
+		
+		if(retVal<0) retVal = -retVal-2;
+		
+		return arrayOfThings[retVal];
+		
 	}
 
 	//Internal Methods ----------------------------------------

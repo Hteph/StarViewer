@@ -45,12 +45,9 @@ public class saveThisLocally {
 		
 		
 		} catch (FileNotFoundException e) { //If the file do not exist, create it and fill it with a new generated system.
+			
 			StellarObject star = null;
-			try {
-				star = StarGenerator.Generator();
-			} catch (IOException e1) {
-				System.out.println("oh NO!");
-			}
+			star = StarGenerator.Generator();
 			ArrayList<StellarObject> systemList = StarSystemGenerator.Generator((Star) star);
 			ArrayList<ArrayList<StellarObject>> testSystem = new ArrayList<>();
 
